@@ -1,5 +1,6 @@
 #pragma once
 #include "PowerupBase.h"
+
 class PowerupFireBall : public PowerupBase
 {
 public:
