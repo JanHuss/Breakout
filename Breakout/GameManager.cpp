@@ -13,10 +13,20 @@ GameManager::GameManager(sf::RenderWindow* window)
     _masterText.setPosition(50, 400);
     _masterText.setCharacterSize(48);
     _masterText.setFillColor(sf::Color::Yellow);
+
+    
 }
 
 void GameManager::initialize()
 {
+	// set mouse to centre of window
+    sf::Vector2u windowSize = _window->getSize();
+    sf::Vector2i centerPosition(windowSize.x / 2, windowSize.y / 2);
+	sf::Mouse::setPosition(centerPosition, *_window);
+
+    std::cout << "Window X halved: " << _window->getSize().x / 2 << std::endl;
+    std::cout << "Window Y halved: " << _window->getSize().y / 2 << std::endl;
+
     _paddle = new Paddle(_window);
     _brickManager = new BrickManager(_window, this);
     _messagingSystem = new MessagingSystem(_window);
@@ -26,7 +36,19 @@ void GameManager::initialize()
 
     // Create bricks
     _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+
 }
+
+void GameManager::deleteObjects()
+{
+	delete _paddle;
+	delete _brickManager;
+	delete _ball;
+	delete _powerupManager;
+	delete _ui;
+}
+
+
 
 void GameManager::update(float dt)
 {
@@ -34,10 +56,14 @@ void GameManager::update(float dt)
     _ui->updatePowerupText(_powerupInEffect);
     _powerupInEffect.second -= dt;
     
+    // strings
+	std::string gameOverText = "Game over. \nPress Enter to restart game";
+	std::string pauseText = "Paused. \nPress Enter to reset game\nPress Esc to exit application";
 
     if (_lives <= 0)
     {
-        _masterText.setString("Game over.");
+        _masterText.setString(gameOverText);
+		resetGame(gameOverText);
         return;
     }
     if (_levelComplete)
@@ -52,8 +78,9 @@ void GameManager::update(float dt)
         if (!_pause && _pauseHold <= 0.f)
         {
             _pause = true;
-            _masterText.setString("paused.");
+            _masterText.setString(pauseText);
             _pauseHold = PAUSE_TIME_BUFFER;
+			// if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) _window->close(); // won't work unless I change the pause menu. Delta time stops running when paused.
         }
         if (_pause && _pauseHold <= 0.f)
         {
@@ -77,9 +104,28 @@ void GameManager::update(float dt)
         _timeLastPowerupSpawned = _time;
     }
 
-    // move paddle
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) _paddle->moveRight(dt);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) _paddle->moveLeft(dt);
+    // move paddle keyboard
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) _paddle->moveRight(dt);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) _paddle->moveLeft(dt);
+
+    // stop paddle going off screen
+	if (_paddle->getPosition().x < 0) _paddle->setPosition(0.5f);
+	if (_paddle->getPosition().x > _window->getSize().x) _paddle->setPosition(_window->getSize().x - 0.5f);
+
+	// mouse input
+	_window->setMouseCursorVisible(false);
+	sf::Vector2i gloalMousePosition = sf::Mouse::getPosition();
+	sf::Vector2i localMousePosition = sf::Mouse::getPosition(*_window);
+
+    // stop paddle going off screen
+	if (localMousePosition.x - _paddle->getWidth()/2 < 0) localMousePosition.x = 0.5f + _paddle->getWidth()/2;
+	if (localMousePosition.x + _paddle->getWidth()/2 > _window->getSize().x) localMousePosition.x = _window->getSize().x - 0.5f - _paddle->getWidth()/2;
+
+    // move paddle with mouse
+    _paddle->setPosition(static_cast<float>(localMousePosition.x)); 
+	
+    // quit game
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) _window->close();
 
     // update everything 
     _paddle->update(dt);
@@ -108,6 +154,30 @@ void GameManager::render()
 void GameManager::levelComplete()
 {
     _levelComplete = true;
+}
+
+void GameManager::resetGame(std::string message)
+{
+    if (_masterText.getString() == message)
+		{
+			// reset game
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+            {
+                // reset lives
+			    _lives = 3;
+			    // reset bricks
+                _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+                // reset life images
+                _ui->resetLives(_lives);
+			    // recentre paddle
+				_paddle->paddleReset();
+				// remove game over text
+                _masterText.setString("");
+
+				deleteObjects();
+				initialize();
+            }
+		}
 }
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }

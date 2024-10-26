@@ -43,6 +43,30 @@ void Paddle::update(float dt)
     {
         setWidth(1.0f, 0.0f); // Reset to default width after duration
     }
+
+    _sprite.getPosition();
+
+}
+
+void Paddle::setPosition(float x)
+{
+	_sprite.setPosition(x - _width/2, _sprite.getPosition().y);
+}
+
+sf::Vector2f Paddle::getPosition()
+{
+	return _sprite.getPosition();
+}
+
+float Paddle::getWidth() const
+{
+    return _width;
+}
+
+void Paddle::paddleReset()
+{
+	_sprite.setPosition((_window->getSize().x - _width) / 2.0f, _window->getSize().y - 50.0f);
+	_isAlive = true;
 }
 
 void Paddle::render()

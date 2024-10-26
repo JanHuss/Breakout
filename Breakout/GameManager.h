@@ -14,11 +14,13 @@ class GameManager {
 public:
     GameManager(sf::RenderWindow* window);
     void initialize();
+	void deleteObjects();
     void update(float dt);
     void loseLife();
     void render();
     void levelComplete();
     void powerupEffect(POWERUPS pu, float t);
+    void resetGame(std::string message);
 
     Paddle* getPaddle() const;
     BrickManager* getBrickManager() const;
@@ -35,6 +37,7 @@ private:
     int _lives;
     bool _levelComplete;
     std::pair<POWERUPS, float> _powerupInEffect;
+    bool mouseInit;
 
     sf::Font _font;
     sf::Text _masterText;
