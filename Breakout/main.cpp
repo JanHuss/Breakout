@@ -12,8 +12,6 @@ int main()
     sf::Clock clock;
     float deltaTime;
     
-    std::cout << "Window X halved in main: " << window.getSize().x / 2 << std::endl;
-    std::cout << "Window Y halved in main: " << window.getSize().y / 2 << std::endl;
     while (window.isOpen())
     {
         sf::Event event;

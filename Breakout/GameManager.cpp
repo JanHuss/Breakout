@@ -14,7 +14,17 @@ GameManager::GameManager(sf::RenderWindow* window)
     _masterText.setCharacterSize(48);
     _masterText.setFillColor(sf::Color::Yellow);
 
-    
+    _levelText.setFont(_font);
+    _levelText.setPosition(_window->getSize().x - 200, 20);
+    _levelText.setCharacterSize(48);
+    _levelText.setFillColor(sf::Color::Yellow);
+
+	level = 5;
+
+    // strings
+	gameOverText = "Game over. \nPress Enter to restart game";
+	pauseText = "Paused. \nPress Enter to reset game\nPress Esc to exit application";
+	levelCompleteText = "Level complete. \nPress Enter to continue";
 }
 
 void GameManager::initialize()
@@ -23,9 +33,6 @@ void GameManager::initialize()
     sf::Vector2u windowSize = _window->getSize();
     sf::Vector2i centerPosition(windowSize.x / 2, windowSize.y / 2);
 	sf::Mouse::setPosition(centerPosition, *_window);
-
-    std::cout << "Window X halved: " << _window->getSize().x / 2 << std::endl;
-    std::cout << "Window Y halved: " << _window->getSize().y / 2 << std::endl;
 
     _paddle = new Paddle(_window);
     _brickManager = new BrickManager(_window, this);
@@ -37,6 +44,8 @@ void GameManager::initialize()
     // Create bricks
     _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
 
+	// set level text
+	_levelText.setString("Level: " + std::to_string(level));
 }
 
 void GameManager::deleteObjects()
@@ -56,19 +65,18 @@ void GameManager::update(float dt)
     _ui->updatePowerupText(_powerupInEffect);
     _powerupInEffect.second -= dt;
     
-    // strings
-	std::string gameOverText = "Game over. \nPress Enter to restart game";
-	std::string pauseText = "Paused. \nPress Enter to reset game\nPress Esc to exit application";
+    
 
     if (_lives <= 0)
     {
         _masterText.setString(gameOverText);
-		resetGame(gameOverText);
+		resetGame(gameOverText, 0);
         return;
     }
     if (_levelComplete)
     {
-        _masterText.setString("Level completed.");
+		_masterText.setString(levelCompleteText);
+		resetGame(levelCompleteText, 1);
         return;
     }
     // pause and pause handling
@@ -148,6 +156,7 @@ void GameManager::render()
     _brickManager->render();
     _powerupManager->render();
     _window->draw(_masterText);
+	_window->draw(_levelText);
     _ui->render();
 }
 
@@ -156,11 +165,11 @@ void GameManager::levelComplete()
     _levelComplete = true;
 }
 
-void GameManager::resetGame(std::string message)
+void GameManager::resetGame(std::string message, int levelIncrease)
 {
-    if (_masterText.getString() == message)
+	// game over
+    if (_masterText.getString() == gameOverText)
 		{
-			// reset game
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
             {
                 // reset lives
@@ -174,10 +183,36 @@ void GameManager::resetGame(std::string message)
 				// remove game over text
                 _masterText.setString("");
 
+
+				// reset level
+				level = 0;
+
 				deleteObjects();
 				initialize();
             }
-		}
+	}
+    // new level
+    else if (_masterText.getString() == levelCompleteText)
+    {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+            {
+                // reset lives
+			    _lives = 3;
+			    // reset bricks
+                _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+                // reset life images
+                _ui->resetLives(_lives);
+			    // recentre paddle
+				_paddle->paddleReset();
+				// remove game over text
+                _masterText.setString("");
+				// increase level
+				level += levelIncrease;
+
+				deleteObjects();
+				initialize();
+            }
+    }
 }
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }
