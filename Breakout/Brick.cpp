@@ -27,6 +27,16 @@ sf::RectangleShape Brick::getShape()
     return _shape;
 }
 
+void Brick::setBrickLife()
+{
+	if (_shape.getFillColor() == sf::Color::Green)
+		_shape.setFillColor(sf::Color::Yellow);
+	else if (_shape.getFillColor() == sf::Color::Yellow)
+		_shape.setFillColor(sf::Color::Red);
+	else if (_shape.getFillColor() == sf::Color::Red)
+		_isDestroyed = true;
+}
+
 sf::FloatRect Brick::getBounds() const
 {
     return _shape.getGlobalBounds();
