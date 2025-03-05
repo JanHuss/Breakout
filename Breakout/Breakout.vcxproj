@@ -138,15 +138,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Asset.cpp" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickManager.cpp" />
+    <ClCompile Include="Composite.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/SFML/include</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="MessagingSystem.cpp" />
     <ClCompile Include="Paddle.cpp" />
+    <ClCompile Include="PlaybackDevice.cpp" />
     <ClCompile Include="PowerupBase.cpp" />
     <ClCompile Include="PowerupBigPaddle.cpp" />
     <ClCompile Include="PowerupFastBall.cpp" />
@@ -154,16 +160,28 @@
     <ClCompile Include="PowerupManager.cpp" />
     <ClCompile Include="PowerupSlowBall.cpp" />
     <ClCompile Include="PowerupSmallPaddle.cpp" />
+    <ClCompile Include="RealVoice.cpp" />
+    <ClCompile Include="RealVoicePool.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="VirtualVoice.cpp" />
+    <ClCompile Include="VirtualVoicePool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Asset.h" />
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrickManager.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Composite.h" />
     <ClInclude Include="CONSTANTS.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Leaf.h" />
     <ClInclude Include="MessagingSystem.h" />
+    <ClInclude Include="miniaudio.h" />
     <ClInclude Include="Paddle.h" />
+    <ClInclude Include="PlaybackDevice.h" />
     <ClInclude Include="PowerupBase.h" />
     <ClInclude Include="PowerupBigPaddle.h" />
     <ClInclude Include="PowerupFastBall.h" />
@@ -171,7 +189,12 @@
     <ClInclude Include="PowerupManager.h" />
     <ClInclude Include="PowerupSlowBall.h" />
     <ClInclude Include="PowerupSmallPaddle.h" />
+    <ClInclude Include="RealVoice.h" />
+    <ClInclude Include="RealVoicePool.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="VirtualVoice.h" />
+    <ClInclude Include="VirtualVoicePool.h" />
+    <ClInclude Include="VoiceBase.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="suggestedIssues.txt" />

@@ -7,12 +7,17 @@
 #include "PowerupManager.h"
 #include "MessagingSystem.h"
 #include "UI.h"
+//audio
+#include "Engine.h"
+//#include "EventManager.h"
+#include "Component.h"
+
 
 
 
 class GameManager {
 public:
-    GameManager(sf::RenderWindow* window);
+    GameManager(sf::RenderWindow* window, Engine* audioEng);
     void initialize();
 	void deleteObjects();
     void update(float dt);
@@ -59,4 +64,9 @@ private:
 
     static constexpr float PAUSE_TIME_BUFFER = 0.5f;
     static constexpr float POWERUP_FREQUENCY = 7.5f;    // time between minimum powerup spawn
+
+    // audio
+    Engine* audioEngine;
+    //EventManager* audioEventManager;
+    Component* smilyDayMusic;
 };

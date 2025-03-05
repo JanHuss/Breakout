@@ -77,6 +77,8 @@ void Ball::update(float dt)
 
         // Adjust position to avoid getting stuck inside the paddle
         _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * RADIUS);
+    
+        // audio one-shot ball collides with paddle
     }
 
     // collision with bricks
@@ -85,10 +87,13 @@ void Ball::update(float dt)
     if (collisionResponse == 1)
     {
         _direction.x *= -1; // Bounce horizontally
+        // audio one-shot ball collides with brick
+
     }
     else if (collisionResponse == 2)
     {
         _direction.y *= -1; // Bounce vertically
+        // audio one-shot ball collides with brick
     }
 }
 

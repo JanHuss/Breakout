@@ -3,8 +3,9 @@
 #include "PowerupManager.h"
 #include <iostream>
 
-GameManager::GameManager(sf::RenderWindow* window)
-    : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
+
+GameManager::GameManager(sf::RenderWindow* window, Engine* audioEng)
+    : _window(window), audioEngine(audioEng), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
     _messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
     _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f)
 {
@@ -25,6 +26,11 @@ GameManager::GameManager(sf::RenderWindow* window)
 	gameOverText = "Game over. \nPress Enter to restart game";
 	pauseText = "Paused. \nPress Enter to reset game\nPress Esc to exit application";
 	levelCompleteText = "Level complete. \nPress Enter to continue";
+
+    // audio engine
+    //audioEventManager = &audioEngine->getEventManagerInstance();
+    smilyDayMusic = audioEngine->getEventManagerInstance().smilyDay_Track;
+
 }
 
 void GameManager::initialize()
@@ -46,6 +52,8 @@ void GameManager::initialize()
 
 	// set level text
 	_levelText.setString("Level: " + std::to_string(level));
+
+   smilyDayMusic->play();
 }
 
 void GameManager::deleteObjects()
@@ -80,7 +88,8 @@ void GameManager::update(float dt)
         return;
     }
     // pause and pause handling
-    if (_pauseHold > 0.f) _pauseHold -= dt;
+    if (_pauseHold > 0.f)
+        _pauseHold -= dt;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
     {
         if (!_pause && _pauseHold <= 0.f)
@@ -89,12 +98,16 @@ void GameManager::update(float dt)
             _masterText.setString(pauseText);
             _pauseHold = PAUSE_TIME_BUFFER;
 			// if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) _window->close(); // won't work unless I change the pause menu. Delta time stops running when paused.
+            // add pause sound here
+            // pause the game sound here perhaps start with a stop feature here
         }
         if (_pause && _pauseHold <= 0.f)
         {
             _pause = false;
             _masterText.setString("");
             _pauseHold = PAUSE_TIME_BUFFER;
+            // add pause sound here
+            // play game music here
         }
     }
     if (_pause)
