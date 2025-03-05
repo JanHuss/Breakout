@@ -37,28 +37,37 @@ public:
 	// Composite objects
 	Component* tree = new Composite;
 
-	Component* bigWave_Event = new Composite;
-	Component* bigWave = new Leaf;
-
-	Component* trapDoor_Event = new Composite;
-	Component* trapDoor = new Leaf;
-
-	Component* smilyDay_Event = new Composite;
-	Component* smilyDay_Track = new Leaf;
-
-	Component* janVoice_Event = new Composite;
-	Component* janVoice_Track = new Leaf;
-
-	Component* thisIsMyVoice_Event = new Composite;
-	Component* thisIsMyVoice_Track = new Leaf;
+	Component* gameMusic = new Leaf;
+	Component* paddle = new Leaf;
+	Component* brick = new Leaf;
+	Component* pause = new Leaf;
+	Component* gameOver = new Leaf;
+	//Component* bigWave_Event = new Composite;
+	//Component* bigWave = new Leaf;
+	//
+	//Component* trapDoor_Event = new Composite;
+	//Component* trapDoor = new Leaf;
+	//
+	//Component* smilyDay_Event = new Composite;
+	//Component* smilyDay_Track = new Leaf;
+	//
+	//Component* janVoice_Event = new Composite;
+	//Component* janVoice_Track = new Leaf;
+	//
+	//Component* thisIsMyVoice_Event = new Composite;
+	//Component* thisIsMyVoice_Track = new Leaf;
 private:
 
 	// Assets
-	Asset bigWave_Asset;
-	Asset trapDoor_Asset;
+	//Asset bigWave_Asset;
+	//Asset trapDoor_Asset;
 	Asset smilyDay_Asset;
-	Asset janVoice_Asset;
-	Asset thisIsMyVoice_Asset;
+	Asset paddle_Asset;
+	Asset brick_Asset;
+	Asset pause_Asset;
+	Asset gameOver_Asset;
+	//Asset janVoice_Asset;
+	//Asset thisIsMyVoice_Asset;
 
 	// Object Pool Setup
 	RealVoicePool* realVoicePool = RealVoicePool::getInstance();

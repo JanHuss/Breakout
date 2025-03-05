@@ -7,12 +7,16 @@ EventManager::EventManager() /*: playbackDevice(realVoicePool)*/
 EventManager::~EventManager()
 {
 	delete tree;
-	delete bigWave_Event;
-	delete bigWave;
-	delete trapDoor_Event;
-	delete trapDoor;
-	delete smilyDay_Event;
-	delete smilyDay_Track;
+	delete paddle;
+	delete brick;
+	delete pause;
+	delete gameOver;
+	//delete bigWave_Event;
+	//delete bigWave;
+	//delete trapDoor_Event;
+	//delete trapDoor;
+	//delete smilyDay_Event;
+	//delete smilyDay_Track;
 
 	//ma_decoder_uninit(&trapDoor.decoder);
 	ma_device_uninit(&playbackDevice.device);
@@ -23,39 +27,66 @@ void EventManager::init()
 	std::cout << "EventManager -> initialising \"eventManager\" object" << std::endl;
 	std::cout << "----------------------------------------------------" << std::endl;
 
+	// Game song
+	tree->Add(gameMusic);
+	smilyDay_Asset.loadFile("assets/audio/SmileyDayToYa.wav");
+	gameMusic->assignAssetToTrack(smilyDay_Asset.getAudioData());
+	gameMusic->setVolume(0.75f);
+	gameMusic->setLoop(true);
+
+	// Ball colliding with Paddle
+	tree->Add(paddle);
+	paddle_Asset.loadFile("assets/audio/PaddleBall.wav");
+	paddle->assignAssetToTrack(paddle_Asset.getAudioData());
+	paddle->setLoop(false);
+
+	// Ball colliding with Brick
+	tree->Add(brick);
+	brick_Asset.loadFile("assets/audio/PaddleBrick.wav");
+	brick->assignAssetToTrack(brick_Asset.getAudioData());
+	brick->setLoop(false);
+
+	// When entering and exiting the Pause menu
+	tree->Add(pause);
+	pause_Asset.loadFile("assets/audio/PauseMenu.wav");
+	pause->assignAssetToTrack(pause_Asset.getAudioData());
+	pause->setLoop(false);
+
+	// When Game Over
+	tree->Add(gameOver);
+	gameOver_Asset.loadFile("assets/audio/GameOver.wav");
+	gameOver->assignAssetToTrack(gameOver_Asset.getAudioData());
+	gameOver->setLoop(false);
+
+
 	// initialising the Engine's hierarchy. Making use of the 
 	// composite pattern
-	tree->Add(bigWave_Event);
-	bigWave_Event->Add(bigWave); // add a Track to an Event
-	bigWave_Asset.loadFile("assets/audio/BigWave.wav"); // Load an Audio File
-	trapDoor->setVolume(0.5f);
-	bigWave->assignAssetToTrack(bigWave_Asset.getAudioData()); 
-	bigWave->setLoop(false);
+	//tree->Add(bigWave_Event);
+	//bigWave_Event->Add(bigWave); // add a Track to an Event
+	//bigWave_Asset.loadFile("assets/audio/BigWave.wav"); // Load an Audio File
+	//trapDoor->setVolume(0.5f);
+	//bigWave->assignAssetToTrack(bigWave_Asset.getAudioData()); 
+	//bigWave->setLoop(false);
+	//
+	//tree->Add(trapDoor_Event);
+	//trapDoor_Event->Add(trapDoor);
+	//trapDoor_Asset.loadFile("assets/audio/TrapDoor.wav");
+	//trapDoor->setVolume(0.5f);
+	//trapDoor->assignAssetToTrack(trapDoor_Asset.getAudioData()); 
+	//trapDoor->setLoop(false);
 
-	tree->Add(trapDoor_Event);
-	trapDoor_Event->Add(trapDoor);
-	trapDoor_Asset.loadFile("assets/audio/TrapDoor.wav");
-	trapDoor->setVolume(0.5f);
-	trapDoor->assignAssetToTrack(trapDoor_Asset.getAudioData()); 
-	trapDoor->setLoop(false);
 
-	tree->Add(smilyDay_Event);
-	smilyDay_Event->Add(smilyDay_Track);
-	smilyDay_Asset.loadFile("assets/audio/SmileyDayToYa.wav");
-	smilyDay_Track->assignAssetToTrack(smilyDay_Asset.getAudioData());
-	smilyDay_Track->setLoop(true);
-
-	tree->Add(janVoice_Event);
-	janVoice_Event->Add(janVoice_Track);
-	janVoice_Asset.loadFile("assets/audio/voiceJan.wav");
-	janVoice_Track->assignAssetToTrack(janVoice_Asset.getAudioData());
-	janVoice_Track->setLoop(false);
-
-	tree->Add(thisIsMyVoice_Event);
-	thisIsMyVoice_Event->Add(thisIsMyVoice_Track);
-	thisIsMyVoice_Asset.loadFile("assets/audio/thisIsMyVoice.wav");
-	thisIsMyVoice_Track->assignAssetToTrack(thisIsMyVoice_Asset.getAudioData());
-	thisIsMyVoice_Track->setLoop(false);
+	//tree->Add(janVoice_Event);
+	//janVoice_Event->Add(janVoice_Track);
+	//janVoice_Asset.loadFile("assets/audio/voiceJan.wav");
+	//janVoice_Track->assignAssetToTrack(janVoice_Asset.getAudioData());
+	//janVoice_Track->setLoop(false);
+	//
+	//tree->Add(thisIsMyVoice_Event);
+	//thisIsMyVoice_Event->Add(thisIsMyVoice_Track);
+	//thisIsMyVoice_Asset.loadFile("assets/audio/thisIsMyVoice.wav");
+	//thisIsMyVoice_Track->assignAssetToTrack(thisIsMyVoice_Asset.getAudioData());
+	//thisIsMyVoice_Track->setLoop(false);
 
 
 	//TreeStructure(tree);

@@ -1,5 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+//audio
+#include "Engine.h"
+#include "Component.h"
 
 
 class GameManager;  // forward declaration
@@ -8,7 +11,7 @@ class GameManager;  // forward declaration
 
 class Ball {
 public:
-    Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager);
+    Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager, Engine* audioEng);
     ~Ball();
     void update(float dt);
     void render();
@@ -29,5 +32,9 @@ private:
 
     static constexpr float RADIUS = 10.0f;      
     static constexpr float VELOCITY = 350.0f;   // for reference.
+
+    // audio
+    Engine* audioEngine;
+    Component* paddle;
 };
 

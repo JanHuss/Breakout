@@ -1,13 +1,15 @@
 #include "Ball.h"
 #include "GameManager.h" // avoid cicular dependencies
 
-Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager)
-    : _window(window), _velocity(velocity), _gameManager(gameManager),
+Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager, Engine* audioEng)
+    : _window(window), _velocity(velocity), _gameManager(gameManager), audioEngine(audioEng),
     _timeWithPowerupEffect(0.f), _isFireBall(false), _isAlive(true), _direction({1,1})
 {
     _sprite.setRadius(RADIUS);
     _sprite.setFillColor(sf::Color::Cyan);
     _sprite.setPosition(0, 300);
+
+    paddle = audioEngine->getEventManagerInstance().paddle;
 }
 
 Ball::~Ball()
@@ -79,6 +81,7 @@ void Ball::update(float dt)
         _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * RADIUS);
     
         // audio one-shot ball collides with paddle
+        paddle->play();
     }
 
     // collision with bricks

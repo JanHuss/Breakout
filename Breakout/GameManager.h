@@ -9,7 +9,6 @@
 #include "UI.h"
 //audio
 #include "Engine.h"
-//#include "EventManager.h"
 #include "Component.h"
 
 
@@ -67,6 +66,5 @@ private:
 
     // audio
     Engine* audioEngine;
-    //EventManager* audioEventManager;
     Component* smilyDayMusic;
 };
