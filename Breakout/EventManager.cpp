@@ -11,12 +11,7 @@ EventManager::~EventManager()
 	delete brick;
 	delete pause;
 	delete gameOver;
-	//delete bigWave_Event;
-	//delete bigWave;
-	//delete trapDoor_Event;
-	//delete trapDoor;
-	//delete smilyDay_Event;
-	//delete smilyDay_Track;
+	delete levelComplete;
 
 	//ma_decoder_uninit(&trapDoor.decoder);
 	ma_device_uninit(&playbackDevice.device);
@@ -57,6 +52,12 @@ void EventManager::init()
 	gameOver_Asset.loadFile("assets/audio/GameOver.wav");
 	gameOver->assignAssetToTrack(gameOver_Asset.getAudioData());
 	gameOver->setLoop(false);
+
+	// When winning a level
+	tree->Add(levelComplete);
+	levelComplete_Asset.loadFile("assets/audio/LevelComplete.wav");
+	levelComplete->assignAssetToTrack(levelComplete_Asset.getAudioData());
+	levelComplete->setLoop(false);
 
 
 	// initialising the Engine's hierarchy. Making use of the 

@@ -75,4 +75,5 @@ private:
     Component* smilyDayMusic;
     Component* pause;
     Component* gameOver;
+    Component* levelComplete;
 };

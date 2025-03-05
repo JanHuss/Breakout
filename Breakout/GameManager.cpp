@@ -31,6 +31,7 @@ GameManager::GameManager(sf::RenderWindow* window, Engine* audioEng)
     smilyDayMusic = audioEngine->getEventManagerInstance().gameMusic;
     pause = audioEngine->getEventManagerInstance().pause;
     gameOver = audioEngine->getEventManagerInstance().gameOver;
+    levelComplete = audioEngine->getEventManagerInstance().levelComplete;
 
     _pause = false;
     _gameOver = false;
@@ -101,6 +102,7 @@ void GameManager::update(float dt)
     }
     if (_gameOver)
     {   
+         _pauseHold = PAUSE_TIME_BUFFER;
          if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
          {
             _gameOver = false;
@@ -115,15 +117,18 @@ void GameManager::update(float dt)
         if (!_playedLevelComplete)
         {
             _playedLevelComplete = true;
-
+            
             if(smilyDayMusic->isPlaying)
                 smilyDayMusic->stop();
+
+            levelComplete->play();
         }
 		_masterText.setString(levelCompleteText);
         return;
     }
     if (_levelComplete)
     {
+        _pauseHold = PAUSE_TIME_BUFFER;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
             _levelComplete = false;
@@ -132,8 +137,8 @@ void GameManager::update(float dt)
 
             if(!smilyDayMusic->isPlaying)
                 smilyDayMusic->play();
-            return;
         }
+        return;
     }
     // pause and pause handling
     if (_pauseHold > 0.f)
