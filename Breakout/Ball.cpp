@@ -8,8 +8,10 @@ Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager, E
     _sprite.setRadius(RADIUS);
     _sprite.setFillColor(sf::Color::Cyan);
     _sprite.setPosition(0, 300);
-
+    
+    // Audio - assigning leafs to pointers
     paddle = audioEngine->getEventManagerInstance().paddle;
+    brick = audioEngine->getEventManagerInstance().brick;
 }
 
 Ball::~Ball()
@@ -91,12 +93,14 @@ void Ball::update(float dt)
     {
         _direction.x *= -1; // Bounce horizontally
         // audio one-shot ball collides with brick
+        brick->play();
 
     }
     else if (collisionResponse == 2)
     {
         _direction.y *= -1; // Bounce vertically
         // audio one-shot ball collides with brick
+        brick->play();
     }
 }
 

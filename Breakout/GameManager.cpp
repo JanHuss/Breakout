@@ -28,8 +28,9 @@ GameManager::GameManager(sf::RenderWindow* window, Engine* audioEng)
 	levelCompleteText = "Level complete. \nPress Enter to continue";
 
     // audio engine
-    //audioEventManager = &audioEngine->getEventManagerInstance();
     smilyDayMusic = audioEngine->getEventManagerInstance().gameMusic;
+    pause = audioEngine->getEventManagerInstance().pause;
+    gameOver = audioEngine->getEventManagerInstance().gameOver;
 
 }
 
@@ -99,6 +100,7 @@ void GameManager::update(float dt)
             _pauseHold = PAUSE_TIME_BUFFER;
 			// if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) _window->close(); // won't work unless I change the pause menu. Delta time stops running when paused.
             // add pause sound here
+            pause->play();
             // pause the game sound here perhaps start with a stop feature here
         }
         if (_pause && _pauseHold <= 0.f)
@@ -107,6 +109,7 @@ void GameManager::update(float dt)
             _masterText.setString("");
             _pauseHold = PAUSE_TIME_BUFFER;
             // add pause sound here
+            pause->play();
             // play game music here
         }
     }

@@ -67,4 +67,6 @@ private:
     // audio
     Engine* audioEngine;
     Component* smilyDayMusic;
+    Component* pause;
+    Component* gameOver;
 };
