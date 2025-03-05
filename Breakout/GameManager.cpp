@@ -32,6 +32,9 @@ GameManager::GameManager(sf::RenderWindow* window, Engine* audioEng)
     pause = audioEngine->getEventManagerInstance().pause;
     gameOver = audioEngine->getEventManagerInstance().gameOver;
 
+    _pause = false;
+    _gameOver = false;
+
 }
 
 void GameManager::initialize()

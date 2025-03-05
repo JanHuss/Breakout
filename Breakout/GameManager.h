@@ -35,6 +35,8 @@ public:
 
 private:
     bool _pause;
+    bool _gameOver;
+
     float _pauseHold;
     float _time;
     float _timeLastPowerupSpawned;
