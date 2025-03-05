@@ -42,6 +42,7 @@ public:
     void setCurrentVoice(VoiceBase* voice);
     VoiceBase* getCurrentVoice();
     
+
 private:
     std::vector<float> audioData;
     enum VOICETYPE {REAL, VIRTUAL};

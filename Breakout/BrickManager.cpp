@@ -54,9 +54,14 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
         break;
         
     }
-    if (_bricks.size() == 0)
-    {
-        _gameManager->levelComplete();
-    }
+    //if (_bricks.size() == 0)
+    //{
+    //    _gameManager->setLevelComplete(true);
+    //}
     return collisionResponse;
+}
+
+std::vector<Brick> BrickManager::getBricks()
+{
+    return _bricks;
 }

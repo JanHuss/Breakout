@@ -22,7 +22,7 @@ public:
     void update(float dt);
     void loseLife();
     void render();
-    void levelComplete();
+    void setLevelComplete(bool lC);
     void powerupEffect(POWERUPS pu, float t);
     void resetGame(std::string message, int levelIncrease);
 
@@ -36,15 +36,19 @@ public:
 private:
     bool _pause;
     bool _gameOver;
+    bool _playedGameOver;
+    bool _playedLevelComplete;
+    bool _levelComplete;
+
+    bool mouseInit;
 
     float _pauseHold;
     float _time;
     float _timeLastPowerupSpawned;
     int _lives;
-    bool _levelComplete;
+    int _level;
+
     std::pair<POWERUPS, float> _powerupInEffect;
-    bool mouseInit;
-    int level;
 
     sf::Font _font;
     sf::Text _masterText;

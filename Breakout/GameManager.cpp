@@ -20,7 +20,7 @@ GameManager::GameManager(sf::RenderWindow* window, Engine* audioEng)
     _levelText.setCharacterSize(48);
     _levelText.setFillColor(sf::Color::Yellow);
 
-	level = 5;
+	_level = 0;
 
     // strings
 	gameOverText = "Game over. \nPress Enter to restart game";
@@ -34,7 +34,12 @@ GameManager::GameManager(sf::RenderWindow* window, Engine* audioEng)
 
     _pause = false;
     _gameOver = false;
+    _levelComplete = false;
+    _playedGameOver = false;
+    _playedLevelComplete = false;
 
+    if (!smilyDayMusic->isPlaying)
+        smilyDayMusic->play();
 }
 
 void GameManager::initialize()
@@ -52,12 +57,13 @@ void GameManager::initialize()
     _ui = new UI(_window, _lives, this);
 
     // Create bricks
-    _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+    //_brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+    _brickManager->createBricks(1, 2, 1000.0f, 30.0f, 1.0f); // debug state
 
 	// set level text
-	_levelText.setString("Level: " + std::to_string(level));
+	_levelText.setString("Level: " + std::to_string(_level));
 
-   smilyDayMusic->play();
+   
 }
 
 void GameManager::deleteObjects()
@@ -79,17 +85,55 @@ void GameManager::update(float dt)
     
     
 
-    if (_lives <= 0)
+    if (_lives <= 0 && !_gameOver)
     {
+        _gameOver = true;
         _masterText.setString(gameOverText);
-		resetGame(gameOverText, 0);
+		if (!_playedGameOver)
+        {
+            _playedGameOver = true;
+            if(smilyDayMusic->isPlaying)
+                smilyDayMusic->stop();
+            gameOver->play();
+        }
+
+        return;
+    }
+    if (_gameOver)
+    {   
+         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+         {
+            _gameOver = false;
+            _playedGameOver = false;
+            resetGame(gameOverText, 0);
+         }
+         return;
+    }
+    if (_brickManager->getBricks().size() == 0 && !_levelComplete)
+    {
+        _levelComplete = true;
+        if (!_playedLevelComplete)
+        {
+            _playedLevelComplete = true;
+
+            if(smilyDayMusic->isPlaying)
+                smilyDayMusic->stop();
+        }
+		_masterText.setString(levelCompleteText);
         return;
     }
     if (_levelComplete)
     {
-		_masterText.setString(levelCompleteText);
-		resetGame(levelCompleteText, 1);
-        return;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            _levelComplete = false;
+            _playedLevelComplete = false;
+            resetGame(levelCompleteText, 1);
+
+            if(!smilyDayMusic->isPlaying)
+                smilyDayMusic->play();
+            return;
+        }
     }
     // pause and pause handling
     if (_pauseHold > 0.f)
@@ -101,10 +145,11 @@ void GameManager::update(float dt)
             _pause = true;
             _masterText.setString(pauseText);
             _pauseHold = PAUSE_TIME_BUFFER;
-			// if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) _window->close(); // won't work unless I change the pause menu. Delta time stops running when paused.
+            // pause the game sound here perhaps start with a stop feature here
+            if(smilyDayMusic->isPlaying)
+                smilyDayMusic->stop();
             // add pause sound here
             pause->play();
-            // pause the game sound here perhaps start with a stop feature here
         }
         if (_pause && _pauseHold <= 0.f)
         {
@@ -114,6 +159,8 @@ void GameManager::update(float dt)
             // add pause sound here
             pause->play();
             // play game music here
+            if(!smilyDayMusic->isPlaying)
+                smilyDayMusic->play();
         }
     }
     if (_pause)
@@ -179,9 +226,9 @@ void GameManager::render()
     _ui->render();
 }
 
-void GameManager::levelComplete()
+void GameManager::setLevelComplete(bool lC)
 {
-    _levelComplete = true;
+    _levelComplete = lC;
 }
 
 void GameManager::resetGame(std::string message, int levelIncrease)
@@ -204,10 +251,12 @@ void GameManager::resetGame(std::string message, int levelIncrease)
 
 
 				// reset level
-				level = 0;
+				_level = 0;
 
 				deleteObjects();
 				initialize();
+                if (!smilyDayMusic->isPlaying)
+                    smilyDayMusic->play();
             }
 	}
     // new level
@@ -226,10 +275,13 @@ void GameManager::resetGame(std::string message, int levelIncrease)
 				// remove game over text
                 _masterText.setString("");
 				// increase level
-				level += levelIncrease;
+				_level += levelIncrease;
 
 				deleteObjects();
 				initialize();
+
+                if (!smilyDayMusic->isPlaying)
+                    smilyDayMusic->play();
             }
     }
 }

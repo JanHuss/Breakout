@@ -66,11 +66,13 @@ void Leaf::play()
     {
         voiceType = REAL;
         assignTrackToRealVoice();
+        isPlaying = true;
         std::cout << "Leaf-> is playing real voice" << std::endl;
     }
     else
     {
         voiceType = VIRTUAL;
+        isPlaying = true;
         assignTrackToVirtualVoice(); // think I need to pass track reference in here as a parameter
         std::cout << "Leaf -> No \"Real Voice\" Available. Assign asset to \"Virtual Voice\" " << std::endl;
     }
@@ -84,9 +86,11 @@ void Leaf::stop()
     {
     case REAL:
         removeTrackFromRealVoice();
+        isPlaying = false;
         break;
     case VIRTUAL:
         removeTrackFromVirtualVoice();
+        isPlaying = false;
         break;
     default:
         break;
