@@ -26,35 +26,45 @@ class RealVoice :
     public VoiceBase
 {
 public:
+    RealVoice();
     void assignDataToBuffer(std::vector<float>& audioData, bool loop, std::function<void()> fCallback) override;
     void clearBuffer() override;
     void processAudio(float* outputBuffer, ma_uint32 frameCount) override;
     void setIsActive(bool iActive);
     bool getIsActive();
-    void setPlayHead(size_t plHead);
-    size_t getPlayHead();
+    void setPlayHead(float plHead);
+    float getPlayHead();
     // has to be removed. just used for testing what the buffer is looking like in callback
     std::vector<float> getBuffer() override;
     void captureData(VirtualVoice* vVoice);
-    //std::mutex dataTransferMutex;
+
     void fadeIn(ma_uint32 elaspedFrames, ma_uint32 elapsedFadeDuration);
     void fadeOut(int elaspedFrames, int elapsedFadeDuration);
+
+     void adjustVolume(float vol) override;
+     void adjustPan(float lp, float rp) override;
+     void adjustPitch(float semitones) override;
+
+     float interpolateSample(std::vector<float>& audioData, float index);
     
     RVTRANSPORTSTATE rVTransportState = RVTRANSPORTSTATE::RVPLAY;
 
 private:
     std::vector<float> buffer;
-    std::atomic<size_t> playHead {0};
-    size_t pausedPlayhead;
-    size_t pausedStartPlayhead;
+    float pausedPlayhead;
+    float pausedStartPlayhead;
     bool isActive = false;
     int channels = 2;
-    int pan = 0.5f;
+    float pan = 0.5f;
     bool isLooping = false;
     bool hasFadedIn = false;
     bool unPaused = true;
     bool pausedStartSet = false;
     std::function<void()> finishedCallback;
-    
 
+    std::atomic<float> playHead {0.0f};
+    std::atomic<float> volume;
+    std::atomic<float> leftPanning;
+    std::atomic<float> rightPanning;
+    std::atomic<float> pitch;
 };
