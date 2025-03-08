@@ -1,8 +1,8 @@
 #include "BrickManager.h"
-#include "GameManager.h"
 
-BrickManager::BrickManager(sf::RenderWindow* window, GameManager* gameManager)
-    : _window(window), _gameManager(gameManager)
+
+BrickManager::BrickManager(sf::RenderWindow* window)
+    : _window(window)
 {
 }
 
@@ -54,10 +54,6 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
         break;
         
     }
-    //if (_bricks.size() == 0)
-    //{
-    //    _gameManager->setLevelComplete(true);
-    //}
     return collisionResponse;
 }
 

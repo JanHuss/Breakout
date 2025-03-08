@@ -44,6 +44,14 @@ void Paddle::update(float dt)
         setWidth(1.0f, 0.0f); // Reset to default width after duration
     }
 
+    if (_width < _sprite.getSize().x)
+            _sprite.setSize(sf::Vector2f( _sprite.getSize().x - speed * dt, _sprite.getSize().y));
+    if (_width > _sprite.getSize().x)
+            _sprite.setSize(sf::Vector2f( _sprite.getSize().x + speed * dt, _sprite.getSize().y));
+
+    float newX = _sprite.getPosition().x + (_width - PADDLE_WIDTH) / 2;
+    _sprite.setPosition(newX, _sprite.getPosition().y);
+
     _sprite.getPosition();
 
 }
@@ -84,8 +92,16 @@ sf::FloatRect Paddle::getBounds() const
 void Paddle::setWidth(float coeff, float duration)
 {
     _width = coeff * PADDLE_WIDTH;
-    _sprite.setSize(sf::Vector2f(_width, _sprite.getSize().y));
+    // if the width is less than the sprite's get size.x
+    //if (_width < _sprite.getSize().x)
+    //{   
+    //// for as long as the width is less than the getsize.x
+    //    while(_width < _sprite.getSize().x)
+    //         // decrease the sprite's get size.x by 0.1f
+    //        _sprite.setSize(sf::Vector2f( _sprite.getSize().x - 0.1f, _sprite.getSize().y));
+    //
+    //}
     _timeInNewSize = duration;
-    float newX = _sprite.getPosition().x + (_width - PADDLE_WIDTH) / 2;
-    _sprite.setPosition(newX, _sprite.getPosition().y);
+    //float newX = _sprite.getPosition().x + (_width - PADDLE_WIDTH) / 2;
+    //_sprite.setPosition(newX, _sprite.getPosition().y);
 }

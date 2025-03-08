@@ -4,6 +4,8 @@
 
 class PowerupSmallPaddle : public PowerupBase
 {
+private:
+    float speed;
 public:
     PowerupSmallPaddle(sf::RenderWindow* window, Paddle* paddle, Ball* ball);
     ~PowerupSmallPaddle();

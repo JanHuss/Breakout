@@ -39,6 +39,7 @@ public:
 
 	Component* gameMusic = new Leaf;
 	Component* paddle = new Leaf;
+	Component* bounds = new Leaf;
 	Component* brick = new Leaf;
 	Component* pause = new Leaf;
 	Component* gameOver = new Leaf;

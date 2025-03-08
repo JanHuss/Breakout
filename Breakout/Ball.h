@@ -37,5 +37,6 @@ private:
     Engine* audioEngine;
     Component* paddle;
     Component* brick;
+    Component* bounds;
 };
 

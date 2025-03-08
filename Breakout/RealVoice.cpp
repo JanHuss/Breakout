@@ -7,7 +7,7 @@
 RealVoice::RealVoice()
 {
 	adjustPan(0.5f,0.5f);
-	adjustPitch(0.0f);
+	adjustPitch(1.0f);
 }
 
 void RealVoice::assignDataToBuffer(std::vector<float>& audioData, bool loop, std::function<void()> fCallback)
@@ -302,7 +302,7 @@ void RealVoice::adjustPan(float lp, float rp)
 
 void RealVoice::adjustPitch(float semitones)
 {
-	pitch.store(std::pow(2.0f, semitones /12.0f));
+	pitch.store(semitones);
 }
 
 float RealVoice::interpolateSample(std::vector<float>& audioData, float index)

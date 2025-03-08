@@ -12,6 +12,8 @@ Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager, E
     // Audio - assigning leafs to pointers
     paddle = audioEngine->getEventManagerInstance().paddle;
     brick = audioEngine->getEventManagerInstance().brick;
+    bounds = audioEngine->getEventManagerInstance().bounds;
+    bounds->setPitch(1.0f);
 }
 
 Ball::~Ball()
@@ -55,12 +57,16 @@ void Ball::update(float dt)
     if ((position.x >= windowDimensions.x - 2 * RADIUS && _direction.x > 0) || (position.x <= 0 && _direction.x < 0))
     {
         _direction.x *= -1;
+        // play sound here
+        bounds->play();
     }
 
     // bounce on ceiling
     if (position.y <= 0 && _direction.y < 0)
     {
         _direction.y *= -1;
+        // play sound here
+        bounds->play();
     }
 
     // lose life bounce

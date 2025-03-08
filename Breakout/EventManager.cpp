@@ -35,6 +35,13 @@ void EventManager::init()
 	paddle->assignAssetToTrack(paddle_Asset.getAudioData());
 	paddle->setLoop(false);
 
+	// Ball colliding with Bounds
+	tree->Add(bounds);
+	paddle_Asset.loadFile("assets/audio/PaddleBall.wav");
+	bounds->assignAssetToTrack(paddle_Asset.getAudioData());
+	bounds->setLoop(false);
+	//bounds->setPitch(0.5);
+
 	// Ball colliding with Brick
 	tree->Add(brick);
 	brick_Asset.loadFile("assets/audio/PaddleBrick.wav");

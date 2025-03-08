@@ -20,11 +20,11 @@ public:
     void initialize();
 	void deleteObjects();
     void update(float dt);
+    void render();
     void handleInput(float dt);
     void updateGameState(float dt);
     void loseLife();
-    void render();
-    void setLevelComplete(bool lC);
+    //void setLevelComplete(bool lC);
     void powerupEffect(POWERUPS pu, float t);
     void resetGame(std::string message, int levelIncrease);
 
@@ -38,6 +38,7 @@ public:
 private:
     GAMESTATE gameState;
 
+    // sound bools
     bool _pause;
     bool _gameOver;
     bool _playedGameOver;
