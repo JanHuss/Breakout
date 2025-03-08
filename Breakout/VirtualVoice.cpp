@@ -1,11 +1,12 @@
 #include "VirtualVoice.h"
 
-void VirtualVoice::assignDataToBuffer(std::vector<float>& audioData, bool loop)
+void VirtualVoice::assignDataToBuffer(std::vector<float>& audioData, bool loop, std::function<void()> fCallback)
 {																			
 	buffer = audioData;
 	isLooping = loop;
 	playHead.store(0);
 	setIsActive(true);
+	finishedCallback = fCallback;
 }
 
 void VirtualVoice::clearBuffer()
@@ -21,44 +22,49 @@ void VirtualVoice::processAudio(float* outputBuffer, ma_uint32 frameCount)
 {
 	// std::clog << "Virtual Voice -> process audio" << std::endl;
 	// std::clog << "Virtual Voice -> buffer size: " << buffer.size() << std::endl;
-
-	for (ma_uint32 i = 0; i < frameCount; ++i)
+	switch (vVTransportState)
 	{
-		size_t threadPlayhead = playHead.load();
-		if (threadPlayhead < buffer.size())
+	case VVPLAY:
+	{
+		
+		for (ma_uint32 i = 0; i < frameCount; ++i)
 		{
-			//if (channels == 1)
-            //{
-            //    threadPlayhead++;
-            //    playHead.store(threadPlayhead);
-            //}
-            //else if (channels == 2)
-            //{
-            //    threadPlayhead++;
-            //    threadPlayhead++;
-            //    playHead.store(threadPlayhead);
-            //    
-            //}
-			threadPlayhead++;
-			//std::clog << "Virtual Voice playhead: " << playHead << std::endl;
-			playHead.store(threadPlayhead);
-		}
-		else
-		{
-			if (isLooping)
+			size_t threadPlayhead = playHead.load();
+			if (threadPlayhead < buffer.size())
 			{
-				threadPlayhead = 0;
+				threadPlayhead++;
+				//std::clog << "Virtual Voice playhead: " << playHead << std::endl;
 				playHead.store(threadPlayhead);
 			}
 			else
 			{
-				setIsActive(false);
-				std::clog << "Virtual Voice -> set Is active is false" << std::endl;
-                break;
+				if (isLooping)
+				{
+					threadPlayhead = 0;
+					playHead.store(threadPlayhead);
+				}
+				else
+				{
+					setIsActive(false);
+					std::clog << "Virtual Voice -> set Is active is false" << std::endl;
+					finishedCallback();
+					break;
+				}
 			}
-		}
 		
+
+		}
+		break;
 	}
+	case VVPAUSE:
+	{
+		break;
+	}
+	default:
+		break;
+	}
+	
+
 }
 
 

@@ -16,6 +16,8 @@
 class Composite :
     public Component
 {
+private:
+    bool isPlaying = false;
 protected:
     std::list<Component*> _children;
 
@@ -26,10 +28,13 @@ public:
 
     void play() override {}
     void stop() override {}
+    void pause() override {}
 
     std::string Operation() const override;
     
     void setVolume(float vol) override {}
     void adjustVolume() override {}
+    void setIsPlaying(bool isPl) override {};
+    bool getIsPlaying() override {return isPlaying;};
 };
 

@@ -17,11 +17,14 @@
 #include <ostream>
 #include <atomic>
 
+
+enum VVTRANSPORTSTATE {VVPLAY, VVPAUSE};
+
 class VirtualVoice : 
     public VoiceBase
 {
 public:
-	void assignDataToBuffer(std::vector<float>& audioData, bool loop) override;
+	void assignDataToBuffer(std::vector<float>& audioData, bool loop, std::function<void()> fCallback) override;
     void clearBuffer() override;
     void processAudio(float* outputBuffer, ma_uint32 frameCount) override;
     // has to be removed. just used for testing what the buffer is looking like in callback
@@ -35,10 +38,14 @@ public:
     bool isLooping = false;
     std::atomic<size_t> playHead = 0;
 
+    // has to stay public for the Leaf class to access it
+    VVTRANSPORTSTATE vVTransportState = VVTRANSPORTSTATE::VVPLAY;
+
 private:
     //Component& trackReference;
     std::vector<float> buffer;
     bool isActive = false;
     int channels = 2;
+    std::function<void()> finishedCallback;
 };
 

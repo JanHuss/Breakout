@@ -39,7 +39,7 @@ GameManager::GameManager(sf::RenderWindow* window, Engine* audioEng)
     _playedGameOver = false;
     _playedLevelComplete = false;
 
-    if (!smilyDayMusic->isPlaying)
+    if (!smilyDayMusic->getIsPlaying())
         smilyDayMusic->play();
 }
 
@@ -93,7 +93,7 @@ void GameManager::update(float dt)
 		if (!_playedGameOver)
         {
             _playedGameOver = true;
-            if(smilyDayMusic->isPlaying)
+            if(smilyDayMusic->getIsPlaying())
                 smilyDayMusic->stop();
             gameOver->play();
         }
@@ -118,7 +118,7 @@ void GameManager::update(float dt)
         {
             _playedLevelComplete = true;
             
-            if(smilyDayMusic->isPlaying)
+            if(smilyDayMusic->getIsPlaying())
                 smilyDayMusic->stop();
 
             levelComplete->play();
@@ -135,7 +135,7 @@ void GameManager::update(float dt)
             _playedLevelComplete = false;
             resetGame(levelCompleteText, 1);
 
-            if(!smilyDayMusic->isPlaying)
+            if(!smilyDayMusic->getIsPlaying())
                 smilyDayMusic->play();
         }
         return;
@@ -151,8 +151,8 @@ void GameManager::update(float dt)
             _masterText.setString(pauseText);
             _pauseHold = PAUSE_TIME_BUFFER;
             // pause the game sound here perhaps start with a stop feature here
-            if(smilyDayMusic->isPlaying)
-                smilyDayMusic->stop();
+            if(smilyDayMusic->getIsPlaying())
+                smilyDayMusic->pause();
             // add pause sound here
             pause->play();
         }
@@ -164,7 +164,7 @@ void GameManager::update(float dt)
             // add pause sound here
             pause->play();
             // play game music here
-            if(!smilyDayMusic->isPlaying)
+            if(!smilyDayMusic->getIsPlaying())
                 smilyDayMusic->play();
         }
     }
@@ -260,7 +260,7 @@ void GameManager::resetGame(std::string message, int levelIncrease)
 
 				deleteObjects();
 				initialize();
-                if (!smilyDayMusic->isPlaying)
+                if (!smilyDayMusic->getIsPlaying())
                     smilyDayMusic->play();
             }
 	}
@@ -285,7 +285,7 @@ void GameManager::resetGame(std::string message, int levelIncrease)
 				deleteObjects();
 				initialize();
 
-                if (!smilyDayMusic->isPlaying)
+                if (!smilyDayMusic->getIsPlaying())
                     smilyDayMusic->play();
             }
     }
