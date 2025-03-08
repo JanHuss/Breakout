@@ -84,7 +84,7 @@ void GameManager::update(float dt)
     _ui->updatePowerupText(_powerupInEffect);
     _powerupInEffect.second -= dt;
     
-    
+    updateGameState(dt);
 
     if (_lives <= 0 && !_gameOver)
     {
@@ -191,25 +191,52 @@ void GameManager::update(float dt)
 	if (_paddle->getPosition().x < 0) _paddle->setPosition(0.5f);
 	if (_paddle->getPosition().x > _window->getSize().x) _paddle->setPosition(_window->getSize().x - 0.5f);
 
-	// mouse input
+	
+
+    
+
+	
+    
+
+    // update everything 
+    handleInput(dt);
+    _paddle->update(dt);
+    _ball->update(dt);
+    _powerupManager->update(dt);
+}
+
+void GameManager::handleInput(float dt)
+{
+    // quit game
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) _window->close();
+
+    // mouse input
 	_window->setMouseCursorVisible(false);
 	sf::Vector2i gloalMousePosition = sf::Mouse::getPosition();
 	sf::Vector2i localMousePosition = sf::Mouse::getPosition(*_window);
-
     // stop paddle going off screen
 	if (localMousePosition.x - _paddle->getWidth()/2 < 0) localMousePosition.x = 0.5f + _paddle->getWidth()/2;
 	if (localMousePosition.x + _paddle->getWidth()/2 > _window->getSize().x) localMousePosition.x = _window->getSize().x - 0.5f - _paddle->getWidth()/2;
 
-    // move paddle with mouse
+     // move paddle with mouse
     _paddle->setPosition(static_cast<float>(localMousePosition.x)); 
-	
-    // quit game
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) _window->close();
+}
 
-    // update everything 
-    _paddle->update(dt);
-    _ball->update(dt);
-    _powerupManager->update(dt);
+void GameManager::updateGameState(float dt)
+{
+    switch(gameState)
+    {
+    case PLAY:
+        break;
+    case PAUSE:
+        break;
+    case GAMEOVER:
+        break;
+    case LEVELCOMPLETE:
+        break;
+    default:
+        break;
+    }
 }
 
 void GameManager::loseLife()

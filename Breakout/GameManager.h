@@ -12,7 +12,7 @@
 #include "Component.h"
 
 
-
+enum GAMESTATE {PLAY, PAUSE, GAMEOVER, LEVELCOMPLETE};
 
 class GameManager {
 public:
@@ -20,6 +20,8 @@ public:
     void initialize();
 	void deleteObjects();
     void update(float dt);
+    void handleInput(float dt);
+    void updateGameState(float dt);
     void loseLife();
     void render();
     void setLevelComplete(bool lC);
@@ -34,6 +36,8 @@ public:
 
 
 private:
+    GAMESTATE gameState;
+
     bool _pause;
     bool _gameOver;
     bool _playedGameOver;
