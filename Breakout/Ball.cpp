@@ -13,7 +13,7 @@ Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager, E
     paddle = audioEngine->getEventManagerInstance().paddle;
     brick = audioEngine->getEventManagerInstance().brick;
     bounds = audioEngine->getEventManagerInstance().bounds;
-    bounds->setPitch(1.0f);
+    bounds->setPitch(0.5f);
 }
 
 Ball::~Ball()
@@ -58,6 +58,7 @@ void Ball::update(float dt)
     {
         _direction.x *= -1;
         // play sound here
+        //bounds->setPitch(0.5f);
         bounds->play();
     }
 
@@ -66,6 +67,7 @@ void Ball::update(float dt)
     {
         _direction.y *= -1;
         // play sound here
+        //bounds->setPitch(0.5f);
         bounds->play();
     }
 
@@ -94,17 +96,19 @@ void Ball::update(float dt)
 
     // collision with bricks
     int collisionResponse = _gameManager->getBrickManager()->checkCollision(_sprite, _direction);
-    if (_isFireBall) return; // no collisisons when in fireBall mode.
+    //if (_isFireBall) return; // no collisisons when in fireBall mode.
     if (collisionResponse == 1)
     {
-        _direction.x *= -1; // Bounce horizontally
+        if (!_isFireBall)
+            _direction.x *= -1; // Bounce horizontally
         // audio one-shot ball collides with brick
         brick->play();
 
     }
     else if (collisionResponse == 2)
     {
-        _direction.y *= -1; // Bounce vertically
+        if (!_isFireBall)
+            _direction.y *= -1; // Bounce vertically
         // audio one-shot ball collides with brick
         brick->play();
     }
@@ -126,7 +130,7 @@ void Ball::setFireBall(float duration)
     if (duration) 
     {
         _isFireBall = true;
-        _timeWithPowerupEffect = duration;        
+        _timeWithPowerupEffect = duration; 
         return;
     }
     _isFireBall = false;

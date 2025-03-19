@@ -5,6 +5,7 @@
 #include "Paddle.h"
 #include "Ball.h"
 #include <vector>
+#include "Engine.h"
 
 //#include "PowerupFireBall.h"
 
@@ -12,7 +13,7 @@
 class PowerupBase
 {
 public:
-    PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball);
+    PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball, Engine* eng);
     virtual ~PowerupBase();
 
     void update(float dt);
@@ -41,5 +42,5 @@ protected: // Protected so derived classes can access these members
     sf::CircleShape _sprite;
     sf::Color _colour;
     sf::RenderWindow* _window;
-
+    Engine* audioEngine;
 };

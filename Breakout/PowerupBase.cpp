@@ -2,8 +2,9 @@
 #include <cmath>
 #include <iostream>
 
-PowerupBase::PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball)
-    : _time(0.0f) // Initialize the time variable
+PowerupBase::PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball, Engine* eng)
+    : _time(0.0f), // Initialize the time variable
+        audioEngine(eng)
 {
     _window = window;
     _paddle = paddle;

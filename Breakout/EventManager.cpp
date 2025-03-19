@@ -26,7 +26,7 @@ void EventManager::init()
 	tree->Add(gameMusic);
 	smilyDay_Asset.loadFile("assets/audio/SmileyDayToYa.wav");
 	gameMusic->assignAssetToTrack(smilyDay_Asset.getAudioData());
-	gameMusic->setVolume(0.75f);
+	gameMusic->setVolume(0.1f);
 	gameMusic->setLoop(true);
 
 	// Ball colliding with Paddle
@@ -35,12 +35,12 @@ void EventManager::init()
 	paddle->assignAssetToTrack(paddle_Asset.getAudioData());
 	paddle->setLoop(false);
 
-	// Ball colliding with Bounds
+	// Ball colliding with Bounds (same asset as paddle sound but pitched differently)
 	tree->Add(bounds);
 	paddle_Asset.loadFile("assets/audio/PaddleBall.wav");
 	bounds->assignAssetToTrack(paddle_Asset.getAudioData());
 	bounds->setLoop(false);
-	//bounds->setPitch(0.5);
+	bounds->setPitch(0.5);
 
 	// Ball colliding with Brick
 	tree->Add(brick);
@@ -66,38 +66,25 @@ void EventManager::init()
 	levelComplete->assignAssetToTrack(levelComplete_Asset.getAudioData());
 	levelComplete->setLoop(false);
 
+	// Padddle Shrink Debuf
+	tree->Add(paddleShrink);
+	paddleShrink_Asset.loadFile("assets/audio/paddleShrink.wav");
+	paddleShrink->assignAssetToTrack(paddleShrink_Asset.getAudioData());
 
-	// initialising the Engine's hierarchy. Making use of the 
-	// composite pattern
-	//tree->Add(bigWave_Event);
-	//bigWave_Event->Add(bigWave); // add a Track to an Event
-	//bigWave_Asset.loadFile("assets/audio/BigWave.wav"); // Load an Audio File
-	//trapDoor->setVolume(0.5f);
-	//bigWave->assignAssetToTrack(bigWave_Asset.getAudioData()); 
-	//bigWave->setLoop(false);
-	//
-	//tree->Add(trapDoor_Event);
-	//trapDoor_Event->Add(trapDoor);
-	//trapDoor_Asset.loadFile("assets/audio/TrapDoor.wav");
-	//trapDoor->setVolume(0.5f);
-	//trapDoor->assignAssetToTrack(trapDoor_Asset.getAudioData()); 
-	//trapDoor->setLoop(false);
+	// Paddle Expand Buff
+	tree->Add(paddleExpand);
+	paddleExpand_Asset.loadFile("assets/audio/paddleExpand.wav");
+	paddleExpand->assignAssetToTrack(paddleExpand_Asset.getAudioData());
 
+	// Ball speed for slow and fast ball buffs
+	tree->Add(ballSpeed);
+	ballSpeed_Asset.loadFile("assets/audio/SlowBall.wav");
+	ballSpeed->assignAssetToTrack(ballSpeed_Asset.getAudioData());
 
-	//tree->Add(janVoice_Event);
-	//janVoice_Event->Add(janVoice_Track);
-	//janVoice_Asset.loadFile("assets/audio/voiceJan.wav");
-	//janVoice_Track->assignAssetToTrack(janVoice_Asset.getAudioData());
-	//janVoice_Track->setLoop(false);
-	//
-	//tree->Add(thisIsMyVoice_Event);
-	//thisIsMyVoice_Event->Add(thisIsMyVoice_Track);
-	//thisIsMyVoice_Asset.loadFile("assets/audio/thisIsMyVoice.wav");
-	//thisIsMyVoice_Track->assignAssetToTrack(thisIsMyVoice_Asset.getAudioData());
-	//thisIsMyVoice_Track->setLoop(false);
-
-
-	//TreeStructure(tree);
+	// Fireball buff
+	tree->Add(fireBall);
+	fireBall_Asset.loadFile("assets/audio/FireBall.wav");
+	fireBall->assignAssetToTrack(fireBall_Asset.getAudioData());
 
 }
 

@@ -6,7 +6,7 @@ enum POWERUPS
     bigPaddle,
     smallPaddle,
     fastBall,
-    slowBall,
+    ballSpeed,
     fireBall,
     none
 };

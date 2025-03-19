@@ -39,6 +39,10 @@ public:
 
 	Component* gameMusic = new Leaf;
 	Component* paddle = new Leaf;
+	Component* paddleExpand = new Leaf;
+	Component* paddleShrink = new Leaf;
+	Component* ballSpeed = new Leaf;
+	Component* fireBall = new Leaf;
 	Component* bounds = new Leaf;
 	Component* brick = new Leaf;
 	Component* pause = new Leaf;
@@ -50,6 +54,10 @@ private:
 	// Assets
 	Asset smilyDay_Asset;
 	Asset paddle_Asset;
+	Asset paddleExpand_Asset;
+	Asset paddleShrink_Asset;
+	Asset ballSpeed_Asset;
+	Asset fireBall_Asset;
 	Asset brick_Asset;
 	Asset pause_Asset;
 	Asset gameOver_Asset;

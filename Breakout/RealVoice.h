@@ -45,7 +45,9 @@ public:
      void adjustPan(float lp, float rp) override;
      void adjustPitch(float semitones) override;
 
+     float bSplineInterpolation(float indexA, float indexB, float indexC, float indexD, float ratio);
      float interpolateSample(std::vector<float>& audioData, float index);
+
     
     RVTRANSPORTSTATE rVTransportState = RVTRANSPORTSTATE::RVPLAY;
 

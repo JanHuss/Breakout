@@ -7,7 +7,7 @@
 
 GameManager::GameManager(sf::RenderWindow* window, Engine* audioEng)
 	: _window(window), audioEngine(audioEng), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
-	_messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.0f), /*_levelComplete(false),*/
+	_messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.0f), 
 	_powerupInEffect({ none, 0.0f }), _timeLastPowerupSpawned(0.f)
 {
 	_font.loadFromFile("font/montS.ttf");
@@ -59,7 +59,7 @@ void GameManager::initialize()
 	_brickManager = new BrickManager(_window);
 	_messagingSystem = new MessagingSystem(_window);
 	_ball = new Ball(_window, 400.0f, this, audioEngine);
-	_powerupManager = new PowerupManager(_window, _paddle, _ball);
+	_powerupManager = new PowerupManager(_window, _paddle, _ball, audioEngine);
 	_ui = new UI(_window, _lives, this);
 
 	// Create bricks

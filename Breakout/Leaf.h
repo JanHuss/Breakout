@@ -49,7 +49,10 @@ private:
     std::vector<float> audioData;
     enum VOICETYPE {REAL, VIRTUAL};
     VOICETYPE voiceType;
-    //float volume;
+    float volume = 1.0f;
+    float pitch = 0.0f;
+    float leftPan = 0.5f;
+    float rightPan = 0.5f;
     bool isLooping;
     bool isPlaying = false;
 

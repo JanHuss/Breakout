@@ -21,6 +21,12 @@ void Leaf::assignTrackToRealVoice()
     if (realVoice)
     {
         setIsPlaying(true);
+        setPitch(pitch);
+        std::cout << "Leaf -> Current Pitch: " << pitch << std::endl;
+        setVolume(volume);
+        std::cout << "Leaf -> Current Volume: " << volume << std::endl;
+        setPanning(leftPan, rightPan);
+        std::cout << "Leaf -> Current Left Panning: " << leftPan << " and Right Panning: " << rightPan <<  std::endl;
         std::cout << "Leaf -> assigning Track to \"Real Voice\"" << std::endl;
         realVoice->assignDataToBuffer(audioData, getLoop(), [this](){
            realVoice = nullptr; });
@@ -128,6 +134,8 @@ void Leaf::stop()
 
 void Leaf::setVolume(float vol)
 {
+    std::clog << "Leaf -> setting volume to: \"" << vol << "\"" << std::endl;
+    volume = vol;
     if (realVoice)
         realVoice->adjustVolume(vol);
 }
@@ -135,7 +143,8 @@ void Leaf::setVolume(float vol)
 void Leaf::setPanning(float lp, float rp)
 {
     std::clog << "Leaf -> setting panning left: \"" << lp << "\" and panning right: \"" << rp << "\"" << std::endl;
-
+    leftPan = lp;
+    rightPan = rp;
     if (realVoice)
         realVoice->adjustPan(lp, rp);
 }
@@ -143,7 +152,7 @@ void Leaf::setPanning(float lp, float rp)
 void Leaf::setPitch(float semitones)
 {
     std::clog << "Leaf -> setting pitch to: \"" << semitones << "\"" << std::endl;
-
+    pitch = semitones;
     if (realVoice)
         realVoice->adjustPitch(semitones);
 }

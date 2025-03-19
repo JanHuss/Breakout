@@ -7,7 +7,8 @@
 RealVoice::RealVoice()
 {
 	adjustPan(0.5f,0.5f);
-	adjustPitch(1.0f);
+	adjustPitch(0.0f);
+	//std::cout << "Real Voice -> currentPitch: " << pitch.load() << std::endl;
 }
 
 void RealVoice::assignDataToBuffer(std::vector<float>& audioData, bool loop, std::function<void()> fCallback)
@@ -68,12 +69,13 @@ void RealVoice::processAudio(float* outputBuffer, ma_uint32 frameCount)
 					float currentPitch = pitch.load();
 
 					sampleLeft = interpolateSample(buffer, threadPlayhead);
-					//threadPlayhead++;
-					sampleRight = interpolateSample(buffer, threadPlayhead + 1);
-					//threadPlayhead++;
+					threadPlayhead++;
+					sampleRight = interpolateSample(buffer, threadPlayhead);
+					threadPlayhead++;
 					//sampleLeft = buffer[threadPlayhead];					
 					//sampleRight = buffer[threadPlayhead];
 					threadPlayhead += currentPitch * channels;
+					//std::cout << "Real Voice -> currentPitch: " << currentPitch << std::endl;
 					playHead.store(threadPlayhead);
 				}
 			}
@@ -174,10 +176,16 @@ void RealVoice::processAudio(float* outputBuffer, ma_uint32 frameCount)
 				}
 				else if (channels == 2)
 				{
-					float currentPitch = pitch.load();
+					//float currentPitch = pitch.load();
 
 					sampleLeft = buffer[threadPlayhead++];
 					sampleRight = buffer[threadPlayhead++];
+					//sampleLeft = interpolateSample(buffer, threadPlayhead++);
+					////threadPlayhead++;
+					//sampleRight = interpolateSample(buffer, threadPlayhead++);
+
+					//threadPlayhead += pitch.load() * channels;
+					//std::cout << "Real Voice -> channels 2" << std::endl;
 					playHead.store(threadPlayhead);
 				}
 			}
@@ -302,7 +310,26 @@ void RealVoice::adjustPan(float lp, float rp)
 
 void RealVoice::adjustPitch(float semitones)
 {
-	pitch.store(semitones);
+	if (semitones == 0)
+		pitch.store(0.0f);
+	else
+	{
+		std::cout << "Real Voice -> currentPitch before: " << pitch.load() << std::endl;
+		//pitch.store(std::pow(2.0f, semitones /12.0f));
+		pitch.store(semitones);
+		std::cout << "Real Voice -> currentPitch after: " << pitch.load() << std::endl;
+	}
+}
+
+float RealVoice::bSplineInterpolation(float indexZero, float indexOne, float indexTwo, float indexThree, float ratioOne)
+{
+	float ratioTwo = ratioOne;
+	float a = indexThree - indexTwo - indexZero + indexOne;
+	float b = indexZero - indexOne - a;
+	float c = indexTwo - indexZero;
+	float d = indexOne;
+
+	return (a * ratioOne * ratioTwo) + (b * ratioTwo) + (c * ratioOne) + d;
 }
 
 float RealVoice::interpolateSample(std::vector<float>& audioData, float index)
@@ -322,8 +349,19 @@ float RealVoice::interpolateSample(std::vector<float>& audioData, float index)
 
 	float fractionalIndex = index - i;
 
-	if (i + 1 < audioData.size())
-		return audioData[i] * (1.0f - fractionalIndex) + audioData[i + 1] * fractionalIndex;
-	else
-		return audioData[i];
+	
+
+//if (i + 1 < audioData.size())
+//	return audioData[i] * (1.0f - fractionalIndex) + audioData[i + 1] * fractionalIndex;
+//else
+//	return audioData[i];
+
+	float a, b, c, d;
+
+	a = (i - 1 >= 0) ? audioData[i - 1] : audioData[i];
+	b = audioData[i];
+	c = (i + 1 < audioData.size()) ? audioData[i + 1] : audioData[i];
+	d = (i + 2 < audioData.size()) ? audioData[i + 2] : c;
+
+	return bSplineInterpolation(a, b, c, d, fractionalIndex);
 }
