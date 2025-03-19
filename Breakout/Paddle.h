@@ -26,6 +26,7 @@ private:
     sf::RenderWindow* _window;
     sf::RectangleShape _sprite;
     float _width = PADDLE_WIDTH;
+    float _widthDiff;
     bool _isAlive;
     float _timeInNewSize = 0.0f;
     float speed = 50.0f;

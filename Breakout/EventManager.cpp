@@ -12,8 +12,14 @@ EventManager::~EventManager()
 	delete pause;
 	delete gameOver;
 	delete levelComplete;
-
-	//ma_decoder_uninit(&trapDoor.decoder);
+	delete gameMusic;
+	delete paddleExpand;
+	delete paddleShrink;
+	delete ballSpeed;
+	delete fireBall;
+	delete bounds;
+	
+	//ma_delevelComplete = new Leaf;coder_uninit(&trapDoor.decoder);
 	ma_device_uninit(&playbackDevice.device);
 }
 
@@ -26,7 +32,7 @@ void EventManager::init()
 	tree->Add(gameMusic);
 	smilyDay_Asset.loadFile("assets/audio/SmileyDayToYa.wav");
 	gameMusic->assignAssetToTrack(smilyDay_Asset.getAudioData());
-	gameMusic->setVolume(0.1f);
+	gameMusic->setVolume(1.0f);
 	gameMusic->setLoop(true);
 
 	// Ball colliding with Paddle

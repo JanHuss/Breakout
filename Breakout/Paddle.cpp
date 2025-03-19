@@ -49,7 +49,7 @@ void Paddle::update(float dt)
     if (_width > _sprite.getSize().x)
             _sprite.setSize(sf::Vector2f( _sprite.getSize().x + speed * dt, _sprite.getSize().y));
 
-    float newX = _sprite.getPosition().x + (_width - PADDLE_WIDTH) / 2;
+    float newX = (_sprite.getPosition().x + (_width - PADDLE_WIDTH) / 2);
     _sprite.setPosition(newX, _sprite.getPosition().y);
 
     _sprite.getPosition();
@@ -92,6 +92,7 @@ sf::FloatRect Paddle::getBounds() const
 void Paddle::setWidth(float coeff, float duration)
 {
     _width = coeff * PADDLE_WIDTH;
+    _widthDiff = abs(PADDLE_WIDTH - _width);
     // if the width is less than the sprite's get size.x
     //if (_width < _sprite.getSize().x)
     //{   
