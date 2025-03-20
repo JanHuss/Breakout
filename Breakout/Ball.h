@@ -15,8 +15,16 @@ public:
     ~Ball();
     void update(float dt);
     void render();
+    void ballCollisions(float dt);
     void setVelocity(float coeff, float duration);
     void setFireBall(float duration);
+    void setSlowBall(float duration);
+    void setFastBall(float duration);
+   
+    void setExtraBall(float duration);
+    void setMultiBall(float duration);
+
+    void panToBallPosition();
 
 private:
     sf::CircleShape _sprite;
@@ -25,6 +33,10 @@ private:
     float _velocity;
     bool _isAlive;
     bool _isFireBall;
+    bool _isSlowBall;
+    bool _isFastBall;
+   
+    
     float _timeWithPowerupEffect;
 
     GameManager* _gameManager;  // Reference to the GameManager

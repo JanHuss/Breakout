@@ -18,7 +18,7 @@ UI::UI(sf::RenderWindow* window, int lives, GameManager* gameManager)
 		_lives.push_back(newLife);
 	}
 	_powerupText.setCharacterSize(30);
-	_powerupText.setPosition(800, 10);
+	_powerupText.setPosition(_window->getSize().x - POWER_PADDING_X, _window->getSize().y - POWER_PADDING_Y);
 	_powerupText.setFillColor(sf::Color::Cyan);
 	_font.loadFromFile("font/montS.ttf");
 	_powerupText.setFont(_font);
@@ -37,27 +37,27 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 	{
 	case bigPaddle:
 		oss << std::fixed << std::setprecision(2) << powerup.second;
-		_powerupText.setString("big " + oss.str());
+		_powerupText.setString("Big Paddle: " + oss.str());
 		_powerupText.setFillColor(paddleEffectsColour);
 		break;
 	case smallPaddle:
 		oss << std::fixed << std::setprecision(2) << powerup.second;
-		_powerupText.setString("small " + oss.str());
+		_powerupText.setString("Small Paddle: " + oss.str());
 		_powerupText.setFillColor(paddleEffectsColour);
 		break;
 	case ballSpeed:
 		oss << std::fixed << std::setprecision(2) << powerup.second;
-		_powerupText.setString("slow " + oss.str());
+		_powerupText.setString("Sloooow Ball: " + oss.str());
 		_powerupText.setFillColor(ballEffectsColour);
 		break;
 	case fastBall:
 		oss << std::fixed << std::setprecision(2) << powerup.second;
-		_powerupText.setString("fast " + oss.str());
+		_powerupText.setString("Fast Ball: " + oss.str());
 		_powerupText.setFillColor(ballEffectsColour);
 		break;
 	case fireBall:
 		oss << std::fixed << std::setprecision(2) << powerup.second;
-		_powerupText.setString("fire " + oss.str());
+		_powerupText.setString("FIRE BALL: " + oss.str());
 		_powerupText.setFillColor(extraBallEffectsColour);
 		break;
 	case none:

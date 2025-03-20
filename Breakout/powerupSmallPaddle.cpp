@@ -15,5 +15,6 @@ std::pair<POWERUPS, float> PowerupSmallPaddle::applyEffect()
     // audio here
     audioEngine->getEventManagerInstance().paddleShrink->play();
     _paddle->setWidth(0.67f, 5.0f);
+    _paddle->setSmallPaddle(5.0f);
     return { smallPaddle, 5.0f };
 }

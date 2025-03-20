@@ -60,7 +60,7 @@ void PowerupManager::spawnPowerup()
 {
 
     // TODO finish this.
-    switch (/*rand() % 5*/0)
+    switch (rand() % 5/*0*/)
     {
     case 0:
         _powerups.push_back(new PowerupBigPaddle(_window, _paddle, _ball, audioEngine));
@@ -103,6 +103,8 @@ int PowerupManager::getPowerupsSpawned()
 
 std::pair<POWERUPS, float> PowerupManager::getPowerupInEffect()
 {
-    if (!_powerupInEffect) return { none, 0.f };
+    if (!_powerupInEffect) 
+        return {none, 0.f};
+
     return *_powerupInEffect;
 }

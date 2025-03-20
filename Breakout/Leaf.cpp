@@ -151,7 +151,7 @@ void Leaf::setPanning(float lp, float rp)
 
 void Leaf::setPitch(float semitones)
 {
-    std::clog << "Leaf -> setting pitch to: \"" << semitones << "\"" << std::endl;
+    //std::clog << "Leaf -> setting pitch to: \"" << semitones << "\"" << std::endl;
     pitch = semitones;
     if (realVoice)
         realVoice->adjustPitch(semitones);

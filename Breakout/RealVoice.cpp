@@ -314,10 +314,10 @@ void RealVoice::adjustPitch(float semitones)
 		pitch.store(0.0f);
 	else
 	{
-		std::cout << "Real Voice -> currentPitch before: " << pitch.load() << std::endl;
+		//std::cout << "Real Voice -> currentPitch before: " << pitch.load() << std::endl;
 		//pitch.store(std::pow(2.0f, semitones /12.0f));
 		pitch.store(semitones);
-		std::cout << "Real Voice -> currentPitch after: " << pitch.load() << std::endl;
+		//std::cout << "Real Voice -> currentPitch after: " << pitch.load() << std::endl;
 	}
 }
 

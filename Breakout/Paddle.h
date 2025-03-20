@@ -20,6 +20,9 @@ public:
     sf::FloatRect getBounds() const;
     void setWidth(float coeff, float duration);
 
+    void setSmallPaddle(float duration);
+    void setBigPaddle(float duration);
+
 private:
 
 
@@ -27,7 +30,11 @@ private:
     sf::RectangleShape _sprite;
     float _width = PADDLE_WIDTH;
     float _widthDiff;
+    float _timeWithPowerupEffect;
     bool _isAlive;
     float _timeInNewSize = 0.0f;
     float speed = 50.0f;
+
+    bool _isSmallPaddle;
+    bool _isBigPaddle;
 };

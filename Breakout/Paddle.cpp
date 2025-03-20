@@ -2,11 +2,13 @@
 #include <iostream>
 
 Paddle::Paddle(sf::RenderWindow* window)
-    : _window(window), _width(PADDLE_WIDTH), _timeInNewSize(0.0f), _isAlive(true)
+    : _window(window), _width(PADDLE_WIDTH), _timeInNewSize(0.0f), _isAlive(true),  
+    _timeWithPowerupEffect(0.f)
 {
     _sprite.setFillColor(sf::Color::Cyan);
-    _sprite.setPosition((window->getSize().x - _width) / 2.0f, window->getSize().y - 50.0f);
     _sprite.setSize(sf::Vector2f(_width, PADDLE_HEIGHT));
+    _sprite.setPosition(_window->getSize().x/2 - _sprite.getSize().x / 2, _window->getSize().y - 50.0f);
+
 }
 
 Paddle::~Paddle()
@@ -35,6 +37,9 @@ void Paddle::moveRight(float dt)
 
 void Paddle::update(float dt)
 {
+    if (_isSmallPaddle || _isBigPaddle)
+        _sprite.setFillColor(sf::Color(paddleEffectsColour));
+
     if (_timeInNewSize > 0)
     {
         _timeInNewSize -= dt;
@@ -49,10 +54,18 @@ void Paddle::update(float dt)
     if (_width > _sprite.getSize().x)
             _sprite.setSize(sf::Vector2f( _sprite.getSize().x + speed * dt, _sprite.getSize().y));
 
-    float newX = (_sprite.getPosition().x + (_width - PADDLE_WIDTH) / 2);
+    float newX = sf::Mouse::getPosition().x - (_sprite.getSize().x / 2);
     _sprite.setPosition(newX, _sprite.getPosition().y);
 
-    _sprite.getPosition();
+    if (_width == PADDLE_WIDTH)
+        _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
+    //_sprite.getPosition();
+
+    // stop paddle going off screen
+	if (_sprite.getPosition().x < 0) 
+		_sprite.setPosition(0.5f, _sprite.getPosition().y);
+	if (_sprite.getPosition().x + _sprite.getSize().x > _window->getSize().x) 
+		_sprite.setPosition(_window->getSize().x - _sprite.getSize().x - 0.5f, _sprite.getPosition().y);
 
 }
 
@@ -73,6 +86,7 @@ float Paddle::getWidth() const
 
 void Paddle::paddleReset()
 {
+    //sf::Mouse::setPosition(_window->getPosition()/2);
 	_sprite.setPosition((_window->getSize().x - _width) / 2.0f, _window->getSize().y - 50.0f);
 	_isAlive = true;
 }
@@ -105,4 +119,28 @@ void Paddle::setWidth(float coeff, float duration)
     _timeInNewSize = duration;
     //float newX = _sprite.getPosition().x + (_width - PADDLE_WIDTH) / 2;
     //_sprite.setPosition(newX, _sprite.getPosition().y);
+}
+
+void Paddle::setSmallPaddle(float duration)
+{
+    if (duration)
+	{
+		_isSmallPaddle = true;
+		_timeWithPowerupEffect = duration;
+		return;
+	}
+	_isSmallPaddle = false;
+	_timeWithPowerupEffect = 0.f;
+}
+
+void Paddle::setBigPaddle(float duration)
+{
+    if (duration)
+	{
+		_isBigPaddle = true;
+		_timeWithPowerupEffect = duration;
+		return;
+	}
+	_isBigPaddle = false;
+	_timeWithPowerupEffect = 0.f;
 }

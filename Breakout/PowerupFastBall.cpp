@@ -14,6 +14,8 @@ std::pair<POWERUPS, float> PowerupFastBall::applyEffect()
 {
     audioEngine->getEventManagerInstance().ballSpeed->setPitch(0.5f);
     audioEngine->getEventManagerInstance().ballSpeed->play();
+    audioEngine->getEventManagerInstance().gameMusic->setPitch(0.3f);
+    _ball->setFastBall(5.0f);
     _ball->setVelocity(2.f, 5.0f);
     return { fastBall, 5.0f };
 }

@@ -33,7 +33,11 @@ void Ball::update(float dt)
             _velocity = VELOCITY;   // reset speed.
         else
         {
-            setFireBall(0);    // disable fireball
+            // disable powerups
+            setFireBall(0);    
+            setSlowBall(0);
+            setFastBall(0);
+            
             _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
         }        
     }
@@ -45,20 +49,45 @@ void Ball::update(float dt)
         int flicker = rand() % 50 + 205; // Random value between 205 and 255
         _sprite.setFillColor(sf::Color(flicker, flicker / 2, 0)); // Orange flickering color
     }
+    // SlowBall Colour change
+    if (_isSlowBall || _isFastBall)
+         _sprite.setFillColor(sf::Color(ballEffectsColour));
+
+    
 
     // Update position with a subtle floating-point error
     _sprite.move(_direction * _velocity * dt);
 
+    ballCollisions(dt);
+}
+
+void Ball::render()
+{
+    _window->draw(_sprite);
+}
+
+void Ball::ballCollisions(float dt)
+{
     // check bounds and bounce
     sf::Vector2f position = _sprite.getPosition();
     sf::Vector2u windowDimensions = _window->getSize();
 
-    // bounce on walls
-    if ((position.x >= windowDimensions.x - 2 * RADIUS && _direction.x > 0) || (position.x <= 0 && _direction.x < 0))
+    // bounce on left walls
+    if ((position.x <= 0 && _direction.x < 0))
     {
         _direction.x *= -1;
         // play sound here
-        //bounds->setPitch(0.5f);
+        //bounds->setPitch((float)(rand() % 1) - 2.0f);
+        bounds->setPanning(0.8f, 0.2f);
+        bounds->play();
+    }
+    // bounce on right walls
+    else if ((position.x >= windowDimensions.x - 2 * RADIUS && _direction.x > 0))
+    {
+        _direction.x *= -1;
+        // play sound here
+        //bounds->setPitch((float)(rand() % 1) - 2.0f);
+        bounds->setPanning(0.2f, 0.8f);
         bounds->play();
     }
 
@@ -68,6 +97,8 @@ void Ball::update(float dt)
         _direction.y *= -1;
         // play sound here
         //bounds->setPitch(0.5f);
+        //bounds->setPitch((float)(rand() % 1) - 2.0f);
+        panToBallPosition();
         bounds->play();
     }
 
@@ -114,11 +145,6 @@ void Ball::update(float dt)
     }
 }
 
-void Ball::render()
-{
-    _window->draw(_sprite);
-}
-
 void Ball::setVelocity(float coeff, float duration)
 {
     _velocity = coeff * VELOCITY;
@@ -135,4 +161,54 @@ void Ball::setFireBall(float duration)
     }
     _isFireBall = false;
     _timeWithPowerupEffect = 0.f;    
+}
+
+void Ball::setSlowBall(float duration)
+{
+    if (duration) 
+    {
+        _isSlowBall = true;
+        _timeWithPowerupEffect = duration; 
+        return;
+    }
+    _isSlowBall = false;
+    _timeWithPowerupEffect = 0.f; 
+    audioEngine->getEventManagerInstance().gameMusic->setPitch(0.0f);
+}
+
+void Ball::setFastBall(float duration)
+{
+	if (duration)
+	{
+		_isFastBall = true;
+		_timeWithPowerupEffect = duration;
+		return;
+	}
+	_isFastBall = false;
+	_timeWithPowerupEffect = 0.f;
+	audioEngine->getEventManagerInstance().gameMusic->setPitch(0.0f);
+}
+
+void Ball::panToBallPosition()
+{  
+    // left outer fifth
+    if (_sprite.getPosition().x > 0 && 
+        _sprite.getPosition().x < _window->getSize().x/5)
+        bounds->setPanning(0.8f, 0.2f);
+    // left inner fifth
+    if (_sprite.getPosition().x > _window->getSize().x/5 && 
+        _sprite.getPosition().x < (_window->getSize().x/5)*2)
+        bounds->setPanning(0.6f, 0.4f);
+    // centre fifth
+    if (_sprite.getPosition().x > (_window->getSize().x/5)*2 &&
+        _sprite.getPosition().x < _window->getSize().x - (_window->getSize().x/5)*2)
+        bounds->setPanning(0.5f, 0.5f);
+    // right inner quarter
+    if (_sprite.getPosition().x > _window->getSize().x - (_window->getSize().x/5)*2 && 
+        _sprite.getPosition().x < _window->getSize().x - _window->getSize().x/5)
+        bounds->setPanning(0.4f, 0.6f);
+    // right outer quarter
+    if (_sprite.getPosition().x >_window->getSize().x - _window->getSize().x/5 &&
+        _sprite.getPosition().x < _window->getSize().x)
+        bounds->setPanning(0.2f, 0.8f);
 }

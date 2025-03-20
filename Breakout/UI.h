@@ -29,5 +29,7 @@ private:
 
 	static constexpr float LIFE_RADIUS = 15.0f;
 	static constexpr float LIFE_PADDING = 20.0f;
+	static constexpr float POWER_PADDING_X = 275.0f;
+	static constexpr float POWER_PADDING_Y = 50.0f;
 };
 

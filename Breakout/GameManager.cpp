@@ -69,7 +69,7 @@ void GameManager::initialize()
 	// set level text
 	_levelText.setString("Level: " + std::to_string(_level));
 
-
+	//_paddle->setPosition(sf::Mouse::getPosition().x);
 }
 
 void GameManager::deleteObjects()
@@ -141,15 +141,14 @@ void GameManager::render()
 
 void GameManager::handleInput(float dt)
 {
-
-
 	// --- Mouse ---
 	_window->setMouseCursorVisible(false);
 	sf::Vector2i gloalMousePosition = sf::Mouse::getPosition();
 	sf::Vector2i localMousePosition = sf::Mouse::getPosition(*_window);
-	// stop paddle going off screen
-	if (localMousePosition.x - _paddle->getWidth() / 2 < 0) localMousePosition.x = 0.5f + _paddle->getWidth() / 2;
-	if (localMousePosition.x + _paddle->getWidth() / 2 > _window->getSize().x) localMousePosition.x = _window->getSize().x - 0.5f - _paddle->getWidth() / 2;
+
+	//// stop paddle going off screen
+	//if (localMousePosition.x - _paddle->getWidth() / 2 < 0) localMousePosition.x = 0.5f + _paddle->getWidth() / 2;
+	//if (localMousePosition.x + _paddle->getWidth() / 2 > _window->getSize().x) localMousePosition.x = _window->getSize().x - 0.5f - _paddle->getWidth() / 2;
 
 	// move paddle with mouse
 	if (gameState == PLAY)
@@ -159,10 +158,6 @@ void GameManager::handleInput(float dt)
 	// move paddle keyboard this doesn't seem to work 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) _paddle->moveRight(dt);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) _paddle->moveLeft(dt);
-
-	// stop paddle going off screen
-	if (_paddle->getPosition().x < 0) _paddle->setPosition(0.5f);
-	if (_paddle->getPosition().x > _window->getSize().x) _paddle->setPosition(_window->getSize().x - 0.5f);
 
 	// pause functionality
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
