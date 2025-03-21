@@ -9,34 +9,22 @@ Paddle::Paddle(sf::RenderWindow* window)
     _sprite.setSize(sf::Vector2f(_width, PADDLE_HEIGHT));
     _sprite.setPosition(_window->getSize().x/2 - _sprite.getSize().x / 2, _window->getSize().y - 50.0f);
 
+    // set Mouse to centre of window
+	sf::Vector2u windowSize = _window->getSize();
+	sf::Vector2i centerPosition(windowSize.x / 2, _sprite.getPosition().y + _sprite.getSize().y / 2);
+	sf::Mouse::setPosition(centerPosition, *_window);
+
 }
 
 Paddle::~Paddle()
 {
 }
 
-void Paddle::moveLeft(float dt)
-{
-    float position = _sprite.getPosition().x;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && position > 0)
-    {
-        _sprite.move(sf::Vector2f(-dt * PADDLE_SPEED, 0));
-    }
-}
-
-void Paddle::moveRight(float dt)
-{
-    float position = _sprite.getPosition().x;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && position < _window->getSize().x - _width)
-    {
-        _sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
-    }
-}
 
 void Paddle::update(float dt)
 {
+    //_window->setMouseCursorVisible(false);
     if (_isSmallPaddle || _isBigPaddle)
         _sprite.setFillColor(sf::Color(paddleEffectsColour));
 
@@ -50,23 +38,39 @@ void Paddle::update(float dt)
     }
 
     if (_width < _sprite.getSize().x)
+    {
             _sprite.setSize(sf::Vector2f( _sprite.getSize().x - speed * dt, _sprite.getSize().y));
+    }
     if (_width > _sprite.getSize().x)
+    {
             _sprite.setSize(sf::Vector2f( _sprite.getSize().x + speed * dt, _sprite.getSize().y));
-
-    float newX = sf::Mouse::getPosition().x - (_sprite.getSize().x / 2);
-    _sprite.setPosition(newX, _sprite.getPosition().y);
+    }
+    // this allows the mouse to move but prevents the keyboard input from moving
+    // currently sets itself to right on initialisation
+    // these two lines are not needed if the game does not require mouse controls
+    //float newX = sf::Mouse::getPosition().x - (_sprite.getSize().x / 2);
+    //_sprite.setPosition(newX, _sprite.getPosition().y);
 
     if (_width == PADDLE_WIDTH)
         _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
     //_sprite.getPosition();
 
+    
+    handleInput(dt);
+
+}
+
+void Paddle::handleInput(float dt)
+{
     // stop paddle going off screen
 	if (_sprite.getPosition().x < 0) 
 		_sprite.setPosition(0.5f, _sprite.getPosition().y);
 	if (_sprite.getPosition().x + _sprite.getSize().x > _window->getSize().x) 
 		_sprite.setPosition(_window->getSize().x - _sprite.getSize().x - 0.5f, _sprite.getPosition().y);
 
+    // --- Keyboard Controls ---
+	moveRight(dt);
+	moveLeft(dt);
 }
 
 void Paddle::setPosition(float x)
@@ -99,6 +103,30 @@ void Paddle::render()
 sf::FloatRect Paddle::getBounds() const
 {
     return _sprite.getGlobalBounds();
+}
+
+void Paddle::moveLeft(float dt)
+{
+    float position = _sprite.getPosition().x;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)  || 
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && 
+        position > 0 )
+    {
+        _sprite.move(sf::Vector2f(-dt * PADDLE_SPEED, 0));
+    }
+}
+
+void Paddle::moveRight(float dt)
+{
+    float position = _sprite.getPosition().x;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || 
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && 
+        position < _window->getSize().x - _width)
+    {
+        _sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
+    }
 }
 
 // update width by SF of coeff. 

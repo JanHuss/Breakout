@@ -50,11 +50,6 @@ GameManager::GameManager(sf::RenderWindow* window, Engine* audioEng)
 
 void GameManager::initialize()
 {
-	// set mouse to centre of window
-	sf::Vector2u windowSize = _window->getSize();
-	sf::Vector2i centerPosition(windowSize.x / 2, windowSize.y / 2);
-	sf::Mouse::setPosition(centerPosition, *_window);
-
 	_paddle = new Paddle(_window);
 	_brickManager = new BrickManager(_window);
 	_messagingSystem = new MessagingSystem(_window);
@@ -142,22 +137,19 @@ void GameManager::render()
 void GameManager::handleInput(float dt)
 {
 	// --- Mouse ---
-	_window->setMouseCursorVisible(false);
-	sf::Vector2i gloalMousePosition = sf::Mouse::getPosition();
-	sf::Vector2i localMousePosition = sf::Mouse::getPosition(*_window);
+	//_window->setMouseCursorVisible(false);
+	//sf::Vector2i gloalMousePosition = sf::Mouse::getPosition();
+	//sf::Vector2i localMousePosition = sf::Mouse::getPosition(*_window);
 
 	//// stop paddle going off screen
 	//if (localMousePosition.x - _paddle->getWidth() / 2 < 0) localMousePosition.x = 0.5f + _paddle->getWidth() / 2;
 	//if (localMousePosition.x + _paddle->getWidth() / 2 > _window->getSize().x) localMousePosition.x = _window->getSize().x - 0.5f - _paddle->getWidth() / 2;
 
 	// move paddle with mouse
-	if (gameState == PLAY)
-		_paddle->setPosition(static_cast<float>(localMousePosition.x));
+	//if (gameState == PLAY)
+	//	_paddle->setPosition(static_cast<float>(localMousePosition.x));
 
-	// --- Keyboard ---
-	// move paddle keyboard this doesn't seem to work 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) _paddle->moveRight(dt);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) _paddle->moveLeft(dt);
+	
 
 	// pause functionality
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))

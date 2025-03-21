@@ -9,14 +9,15 @@ public:
     Paddle(sf::RenderWindow* window);
     ~Paddle();
 
-    void moveLeft(float dt);
-    void moveRight(float dt);
     void update(float dt);
+    void handleInput(float dt);
     void setPosition(float x);
 	sf::Vector2f getPosition();
 	float getWidth() const;
     void paddleReset();
     void render();
+    void moveLeft(float dt);
+    void moveRight(float dt);
     sf::FloatRect getBounds() const;
     void setWidth(float coeff, float duration);
 
