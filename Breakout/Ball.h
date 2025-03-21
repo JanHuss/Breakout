@@ -28,9 +28,12 @@ public:
 
 private:
     sf::CircleShape _sprite;
+    sf::CircleShape _fastBallSprite;
+    sf::CircleShape _fastBallSpriteTwo;
     sf::Vector2f _direction;
     sf::RenderWindow* _window;
     float _velocity;
+    float _fastBallVelocity;
     bool _isAlive;
     bool _isFireBall;
     bool _isSlowBall;
@@ -42,7 +45,9 @@ private:
     GameManager* _gameManager;  // Reference to the GameManager
 
 
-    static constexpr float RADIUS = 10.0f;      
+    static constexpr float RADIUS = 10.0f;   
+    static constexpr float FASTBALLRADIUSONE = 8.0f;
+    static constexpr float FASTBALLRADIUSTWO = 6.0f;
     static constexpr float VELOCITY = 350.0f;   // for reference.
 
     // audio

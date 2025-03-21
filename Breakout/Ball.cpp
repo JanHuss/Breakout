@@ -1,13 +1,22 @@
 #include "Ball.h"
 #include "GameManager.h" // avoid cicular dependencies
+#include "CONSTANTS.h"
 
 Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager, Engine* audioEng)
     : _window(window), _velocity(velocity), _gameManager(gameManager), audioEngine(audioEng),
-    _timeWithPowerupEffect(0.f), _isFireBall(false), _isAlive(true), _direction({1,1})
+    _timeWithPowerupEffect(0.f), _isFireBall(false), _isAlive(true), _direction({1,1}), _fastBallVelocity(25.0f)
 {
     _sprite.setRadius(RADIUS);
     _sprite.setFillColor(sf::Color::Cyan);
     _sprite.setPosition(0, 300);
+
+    _fastBallSprite.setRadius(FASTBALLRADIUSONE);
+    _fastBallSprite.setFillColor(ballEffectsColour);
+    _fastBallSprite.setPosition(0,300);
+
+    _fastBallSpriteTwo.setRadius(FASTBALLRADIUSTWO);
+    _fastBallSpriteTwo.setFillColor(ballEffectsColour);
+    _fastBallSpriteTwo.setPosition(0,300);
     
     // Audio - assigning leafs to pointers
     paddle = audioEngine->getEventManagerInstance().paddle;
@@ -54,15 +63,23 @@ void Ball::update(float dt)
          _sprite.setFillColor(sf::Color(ballEffectsColour));
 
     
-
+    // Ball movement
     // Update position with a subtle floating-point error
     _sprite.move(_direction * _velocity * dt);
+    _fastBallSprite.move((_sprite.getPosition() - _fastBallSprite.getPosition()) * 20.0f * dt);
+    _fastBallSpriteTwo.move((_fastBallSprite.getPosition() - _fastBallSpriteTwo.getPosition()) * 20.0f * dt);
 
     ballCollisions(dt);
 }
 
 void Ball::render()
 {
+	if (_isFastBall)
+	{
+		// then render the other two sprites
+		_window->draw(_fastBallSpriteTwo);
+		_window->draw(_fastBallSprite);
+	}
     _window->draw(_sprite);
 }
 
