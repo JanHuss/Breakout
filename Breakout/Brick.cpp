@@ -5,14 +5,8 @@ Brick::Brick(float x, float y, float width, float height)
 {
     _shape.setPosition(x, y);
     _shape.setSize(sf::Vector2f(width, height));
-	// create different colors for each brick depending on the rows they are in.
-   // _shape.setFillColor(sf::Color::Red);
-	if (y < 150)
-		_shape.setFillColor(sf::Color::Green);
-	if (y > 150 && y < 200)
-		_shape.setFillColor(sf::Color::Yellow);
-	if (y > 200 && y < 400)
-        _shape.setFillColor(sf::Color::Red);
+
+	brickLife = 0;
 }
 
 void Brick::render(sf::RenderWindow& window)
@@ -27,17 +21,38 @@ sf::RectangleShape Brick::getShape()
     return _shape;
 }
 
-void Brick::setBrickLife()
-{
-	if (_shape.getFillColor() == sf::Color::Green)
-		_shape.setFillColor(sf::Color::Yellow);
-	else if (_shape.getFillColor() == sf::Color::Yellow)
-		_shape.setFillColor(sf::Color::Red);
-	else if (_shape.getFillColor() == sf::Color::Red)
-		_isDestroyed = true;
-}
-
 sf::FloatRect Brick::getBounds() const
 {
     return _shape.getGlobalBounds();
+}
+
+void Brick::setBrickColour()
+{
+	switch (brickColour)
+	{
+	case RED:
+		_shape.setFillColor(sf::Color::Red);
+		break;
+	case AMBER:
+		_shape.setFillColor(sf::Color::Yellow);
+		break;
+	case GREEN:
+		_shape.setFillColor(sf::Color::Green);
+		break;
+	case SOLID:
+		_shape.setFillColor(sf::Color::White);
+		break;
+	default:
+		break;
+	}
+}
+
+void Brick::setBrickLife(int bL)
+{
+	brickLife = bL;
+}
+
+int Brick::getBrickLife()
+{
+	return brickLife;
 }

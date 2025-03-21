@@ -19,13 +19,36 @@ void BrickManager::createBricks(int rows, int cols, float brickWidth, float bric
             float x = j * (brickWidth + spacing) + leftEdge;
             float y = i * (brickHeight + spacing) + TOP_PADDING;
             _bricks.emplace_back(x, y, brickWidth, brickHeight);
+            // set brick colour and lifes
+            if (i == 0 && brickCounter < _bricks.size())
+            {
+                _bricks[brickCounter].brickColour = RED;
+                _bricks[brickCounter].setBrickColour();
+                _bricks[brickCounter].setBrickLife(3);
+                brickCounter++;
+            }
+            if (i == 1 || i == 2 && brickCounter < _bricks.size())
+            {
+                _bricks[brickCounter].brickColour = AMBER;
+                _bricks[brickCounter].setBrickColour();
+                _bricks[brickCounter].setBrickLife(2);
+                brickCounter++;
+            }
+            else if (i == 3 || i == 4 && brickCounter < _bricks.size())
+            {
+                _bricks[brickCounter].brickColour = GREEN;
+                _bricks[brickCounter].setBrickColour();
+                _bricks[brickCounter].setBrickLife(1);
+                brickCounter++;
+            }
         }
     }
 }
 
 void BrickManager::render()
 {
-    for (auto& brick : _bricks) {
+    for (auto& brick : _bricks) 
+    {
         brick.render(*_window);
     }
 }
@@ -41,17 +64,34 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
         float ballY = ballPosition.y + 0.5f * ball.getGlobalBounds().height;
         sf::FloatRect brickBounds = brick.getBounds();
 
+        
         // default vertical bounce (collision is top/bottom)
         collisionResponse = 2;
         if (ballY > brickBounds.top && ballY < brickBounds.top + brickBounds.height)
             // unless it's horizontal (collision from side)
             collisionResponse = 1;
-
-        // Mark the brick as destroyed (for simplicity, let's just remove it from rendering)
-        // In a complete implementation, you would set an _isDestroyed flag or remove it from the vector
-        brick = _bricks.back();
-        _bricks.pop_back();
-        break;
+        //// red brick
+        //if (brick.getBrickLife() == 3)
+        //{
+        //    brick.setBrickLife(2);
+        //    brick.brickColour = AMBER;
+        //    brick.setBrickColour(); 
+        //}
+        //if (brick.getBrickLife() == 2)
+        //{
+        //    brick.setBrickLife(0);
+        //    brick.brickColour = GREEN;
+        //    brick.setBrickColour(); 
+        //}
+        //if (brick.getBrickLife() == 0)
+        //{
+            // Mark the brick as destroyed (for simplicity, let's just remove it from rendering)
+            // In a complete implementation, you would set an _isDestroyed flag or remove it from the vector
+            brick = _bricks.back();
+            _bricks.pop_back();
+            break;
+        //}
+        //break;
         
     }
     return collisionResponse;

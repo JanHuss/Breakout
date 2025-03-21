@@ -14,6 +14,6 @@ public:
 private:
     std::vector<Brick> _bricks;
     sf::RenderWindow* _window;
-
+    int brickCounter = 0;
     static constexpr float TOP_PADDING = 100.0f;
 };
