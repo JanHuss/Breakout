@@ -102,12 +102,16 @@ void Ball::ballCollisions(float dt)
         bounds->play();
     }
 
-    // lose life bounce
+    // hits bottom of window and player loses life
     if (position.y > windowDimensions.y)
     {
-        _sprite.setPosition(0, 300);
-        _direction = { 1, 1 };
         _gameManager->loseLife();
+        // lose life sound here
+        // place new position of ball
+        _sprite.setPosition(0, 300);
+        // stop game for 3 seconds so that the player can predict the ball
+        // set a random direction downwards
+        _direction = { 1, 1 };
     }
 
     // collision with paddle

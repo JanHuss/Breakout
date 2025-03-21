@@ -10,12 +10,9 @@ public:
     sf::RectangleShape getShape();
     sf::FloatRect getBounds() const;
     void setBrickColour();
-    void setBrickLife(int bL);
-    int getBrickLife();
     BRICKCOLOUR brickColour;
 
 private:
     sf::RectangleShape _shape;
     bool _isDestroyed;
-    int brickLife;
 };

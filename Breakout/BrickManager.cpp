@@ -13,6 +13,7 @@ void BrickManager::createBricks(int rows, int cols, float brickWidth, float bric
         leftEdge = _window->getSize().x / 2 - ((cols / 2.0f) * brickWidth + (cols / 2.0f - 0.5f) * spacing);
     else
         leftEdge = _window->getSize().x / 2 - ((cols / 2.0f - 0.5f) * brickWidth + (cols / 2.0f) * spacing);
+    brickCounter = 0;
 
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
@@ -24,21 +25,18 @@ void BrickManager::createBricks(int rows, int cols, float brickWidth, float bric
             {
                 _bricks[brickCounter].brickColour = RED;
                 _bricks[brickCounter].setBrickColour();
-                _bricks[brickCounter].setBrickLife(3);
                 brickCounter++;
             }
             if (i == 1 || i == 2 && brickCounter < _bricks.size())
             {
                 _bricks[brickCounter].brickColour = AMBER;
                 _bricks[brickCounter].setBrickColour();
-                _bricks[brickCounter].setBrickLife(2);
                 brickCounter++;
             }
             else if (i == 3 || i == 4 && brickCounter < _bricks.size())
             {
                 _bricks[brickCounter].brickColour = GREEN;
                 _bricks[brickCounter].setBrickColour();
-                _bricks[brickCounter].setBrickLife(1);
                 brickCounter++;
             }
         }
@@ -70,29 +68,28 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
         if (ballY > brickBounds.top && ballY < brickBounds.top + brickBounds.height)
             // unless it's horizontal (collision from side)
             collisionResponse = 1;
-        //// red brick
-        //if (brick.getBrickLife() == 3)
-        //{
-        //    brick.setBrickLife(2);
-        //    brick.brickColour = AMBER;
-        //    brick.setBrickColour(); 
-        //}
-        //if (brick.getBrickLife() == 2)
-        //{
-        //    brick.setBrickLife(0);
-        //    brick.brickColour = GREEN;
-        //    brick.setBrickColour(); 
-        //}
-        //if (brick.getBrickLife() == 0)
-        //{
+
+        // red brick
+        if (brick.brickColour == RED)
+        {
+            brick.brickColour = AMBER;
+            brick.setBrickColour(); 
+            break;
+        }
+        if (brick.brickColour == AMBER)
+        {
+            brick.brickColour = GREEN;
+            brick.setBrickColour(); 
+            break;
+        }
+        if (brick.brickColour == GREEN)
+        {
             // Mark the brick as destroyed (for simplicity, let's just remove it from rendering)
             // In a complete implementation, you would set an _isDestroyed flag or remove it from the vector
             brick = _bricks.back();
             _bricks.pop_back();
             break;
-        //}
-        //break;
-        
+        }        
     }
     return collisionResponse;
 }

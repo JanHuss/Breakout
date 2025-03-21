@@ -5,8 +5,6 @@ Brick::Brick(float x, float y, float width, float height)
 {
     _shape.setPosition(x, y);
     _shape.setSize(sf::Vector2f(width, height));
-
-	brickLife = 0;
 }
 
 void Brick::render(sf::RenderWindow& window)
@@ -45,14 +43,4 @@ void Brick::setBrickColour()
 	default:
 		break;
 	}
-}
-
-void Brick::setBrickLife(int bL)
-{
-	brickLife = bL;
-}
-
-int Brick::getBrickLife()
-{
-	return brickLife;
 }

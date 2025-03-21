@@ -20,6 +20,8 @@ UI::UI(sf::RenderWindow* window, int lives, GameManager* gameManager)
 	_powerupText.setCharacterSize(30);
 	_powerupText.setPosition(_window->getSize().x - POWER_PADDING_X, _window->getSize().y - POWER_PADDING_Y);
 	_powerupText.setFillColor(sf::Color::Cyan);
+	_powerupText.setOutlineThickness(0.5f);
+	_powerupText.setOutlineColor(sf::Color::Black);
 	_font.loadFromFile("font/montS.ttf");
 	_powerupText.setFont(_font);
 }
