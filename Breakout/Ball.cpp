@@ -208,24 +208,32 @@ void Ball::setFastBall(float duration)
 
 void Ball::panToBallPosition()
 {  
-    // left outer fifth
-    if (_sprite.getPosition().x > 0 && 
-        _sprite.getPosition().x < _window->getSize().x/5)
-        bounds->setPanning(0.8f, 0.2f);
-    // left inner fifth
-    if (_sprite.getPosition().x > _window->getSize().x/5 && 
-        _sprite.getPosition().x < (_window->getSize().x/5)*2)
-        bounds->setPanning(0.6f, 0.4f);
-    // centre fifth
-    if (_sprite.getPosition().x > (_window->getSize().x/5)*2 &&
-        _sprite.getPosition().x < _window->getSize().x - (_window->getSize().x/5)*2)
-        bounds->setPanning(0.5f, 0.5f);
-    // right inner quarter
-    if (_sprite.getPosition().x > _window->getSize().x - (_window->getSize().x/5)*2 && 
-        _sprite.getPosition().x < _window->getSize().x - _window->getSize().x/5)
-        bounds->setPanning(0.4f, 0.6f);
-    // right outer quarter
-    if (_sprite.getPosition().x >_window->getSize().x - _window->getSize().x/5 &&
-        _sprite.getPosition().x < _window->getSize().x)
-        bounds->setPanning(0.2f, 0.8f);
+	// 1/7
+	if (_sprite.getPosition().x > 0 &&
+		_sprite.getPosition().x < _window->getSize().x * ((float)1 / 7))
+		bounds->setPanning(0.8f, 0.2f);
+	// 2/7
+	if (_sprite.getPosition().x > _window->getSize().x * ((float)1 / 7) &&
+		_sprite.getPosition().x < _window->getSize().x * ((float)2 / 7))
+		bounds->setPanning(0.7f, 0.3f);
+	// 3/7
+	if (_sprite.getPosition().x > _window->getSize().x * ((float)2 / 7) &&
+		_sprite.getPosition().x < _window->getSize().x * ((float)3 / 7))
+		bounds->setPanning(0.6f, 0.4f);
+	// 4/7
+	if (_sprite.getPosition().x > _window->getSize().x * ((float)3 / 7) &&
+		_sprite.getPosition().x < _window->getSize().x * ((float)4 / 7))
+		bounds->setPanning(0.5f, 0.5f);
+	// 5/7
+	if (_sprite.getPosition().x > _window->getSize().x * ((float)4 / 7) &&
+		_sprite.getPosition().x < _window->getSize().x * ((float)5 / 7))
+		bounds->setPanning(0.4f, 0.6f);
+	// 6/7
+	if (_sprite.getPosition().x > _window->getSize().x * ((float)5 / 7) &&
+		_sprite.getPosition().x < _window->getSize().x * ((float)6 / 7))
+		bounds->setPanning(0.3f, 0.7f);
+	// 7/7
+	if (_sprite.getPosition().x > _window->getSize().x * ((float)6 / 7) &&
+		_sprite.getPosition().x < _window->getSize().x)
+		bounds->setPanning(0.2f, 0.8f);   
 }
