@@ -1,9 +1,31 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+#include "Engine.h"
 #include "Ball.h"
+
+#include <vector>
+
+class GameManager;
+
 class BallManager
 {
-	BallManager();
+public:
+	BallManager(sf::RenderWindow* window, GameManager* gameMan, Engine* eng);
 	~BallManager();
+
+	void initialise();
+	void update(float dt);
+	void render();
+
+	// --- Powerups ---
+	//void setSlowBall(float duration);
+
+	std::vector<Ball*> _balls;
+
+private:
+	sf::RenderWindow* _window;
+	Engine* audioEngine;
+	GameManager* gameManager;
 };
 

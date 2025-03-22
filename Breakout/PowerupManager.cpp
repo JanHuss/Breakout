@@ -1,8 +1,8 @@
 #include "PowerupManager.h"
 
 
-PowerupManager::PowerupManager(sf::RenderWindow* window, Paddle* paddle, Ball* ball, Engine* eng, BallManager* ballMan)
-    : _window(window), _paddle(paddle), _ball(ball), audioEngine(eng), _ballManager(ballMan)
+PowerupManager::PowerupManager(sf::RenderWindow* window, Paddle* paddle/*, Ball* ball*/, Engine* eng, BallManager* ballMan)
+    : _window(window), _paddle(paddle),/* _ball(ball),*/ audioEngine(eng), _ballManager(ballMan)
 {
     audioEngine->getEventManagerInstance().paddleShrink;
     audioEngine->getEventManagerInstance().paddleExpand;
@@ -60,7 +60,7 @@ void PowerupManager::spawnPowerup()
 {
 
     // TODO finish this.
-    switch (/*rand() % 6*/ 5)
+    switch (/*rand() % 6*/ 1)
     {
     case 0:
         _powerups.push_back(new PowerupBigPaddle(_window, _paddle, _ball, audioEngine, _ballManager));

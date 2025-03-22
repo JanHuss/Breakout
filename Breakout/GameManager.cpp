@@ -53,8 +53,9 @@ void GameManager::initialize()
 	_paddle = new Paddle(_window);
 	_brickManager = new BrickManager(_window);
 	_messagingSystem = new MessagingSystem(_window);
-	_balls.push_back(new Ball(_window, 400.0f, this, audioEngine));
-	_powerupManager = new PowerupManager(_window, _paddle, _balls[0], audioEngine, _ballManager);
+	//_balls.push_back(new Ball(_window, 400.0f, this, audioEngine));
+	_ballManager = new BallManager(_window, this, audioEngine);
+	_powerupManager = new PowerupManager(_window, _paddle, audioEngine, _ballManager);
 	_ui = new UI(_window, _lives, this);
 
 	// Create bricks
@@ -104,8 +105,9 @@ void GameManager::render()
 	{
 	case PLAY:
 		_paddle->render();
-		for(auto ball:_balls)
-			ball->render();
+		//for(auto ball:_balls)
+		//	ball->render();
+		_ballManager->render();
 		_brickManager->render();
 		_powerupManager->render();
 		//_window->draw(_masterText);
@@ -114,8 +116,9 @@ void GameManager::render()
 		break;
 	case PAUSE:
 		_paddle->render();
-		for(auto ball:_balls)
-			ball->render();
+		//for(auto ball:_balls)
+		//	ball->render();
+		_ballManager->render();
 		_brickManager->render();
 		_powerupManager->render();
 		_window->draw(_masterText);
@@ -200,8 +203,9 @@ void GameManager::updateGameState(float dt)
 		}
 		// update movable objects within game 
 		_paddle->update(dt);
-		for (auto ball : _balls)
-			ball->update(dt);
+		//for (auto ball : _balls)
+		//	ball->update(dt);
+		_ballManager->update(dt);
 		_powerupManager->update(dt);
 		break;
 	case PAUSE:

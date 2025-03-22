@@ -12,14 +12,14 @@
 #include "PowerupDoubleBall.h"
 #include "Paddle.h"
 #include "BallManager.h"
-#include "Ball.h"
+//#include "Ball.h"
 #include "Engine.h"
 
 
 class PowerupManager
 {
 public:
-    PowerupManager(sf::RenderWindow* window, Paddle* paddle, Ball* ball, Engine* eng, BallManager* ballMan);
+    PowerupManager(sf::RenderWindow* window, Paddle* paddle/*, Ball* ball*/, Engine* eng, BallManager* ballMan);
     ~PowerupManager();
 
     void update(float dt);
