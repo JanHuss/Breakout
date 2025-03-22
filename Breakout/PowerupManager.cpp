@@ -60,25 +60,25 @@ void PowerupManager::spawnPowerup()
 {
 
     // TODO finish this.
-    switch (/*rand() % 6*/ 1)
+    switch (/*rand() % 6*/ 4)
     {
     case 0:
-        _powerups.push_back(new PowerupBigPaddle(_window, _paddle, _ball, audioEngine, _ballManager));
+        _powerups.push_back(new PowerupBigPaddle(_window, _paddle,/* _ball,*/ audioEngine, _ballManager));
         break;
     case 1:
-        _powerups.push_back(new PowerupSlowBall(_window, _paddle, _ball, audioEngine, _ballManager));
+        _powerups.push_back(new PowerupSlowBall(_window, _paddle,/* _ball,*/ audioEngine, _ballManager));
         break;
     case 2:
-        _powerups.push_back(new PowerupFastBall(_window, _paddle, _ball, audioEngine, _ballManager));
+        _powerups.push_back(new PowerupFastBall(_window, _paddle,/* _ball,*/ audioEngine, _ballManager));
         break;
     case 3:
-        _powerups.push_back(new PowerupSmallPaddle(_window, _paddle, _ball, audioEngine, _ballManager));
+        _powerups.push_back(new PowerupSmallPaddle(_window, _paddle,/* _ball,*/ audioEngine, _ballManager));
         break;
     case 4:
-        _powerups.push_back(new PowerupFireBall(_window, _paddle, _ball, audioEngine, _ballManager));
+        _powerups.push_back(new PowerupFireBall(_window, _paddle,/* _ball,*/ audioEngine, _ballManager));
         break;
     case 5:
-        _powerups.push_back(new PowerupDoubleBall(_window, _paddle, _ball, audioEngine, _ballManager));
+        _powerups.push_back(new PowerupDoubleBall(_window, _paddle,/* _ball,*/ audioEngine, _ballManager));
        break;
     case 6: 
         break;
