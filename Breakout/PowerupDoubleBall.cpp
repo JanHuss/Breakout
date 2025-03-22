@@ -1,7 +1,7 @@
 #include "PowerupDoubleBall.h"
 
 PowerupDoubleBall::PowerupDoubleBall(sf::RenderWindow* window, Paddle* paddle, Engine* eng, BallManager* ballMan)
-	: PowerupBase(window, paddle/*, ball*/, eng, ballMan)
+	: PowerupBase(window, paddle, eng, ballMan)
 {
 	_sprite.setFillColor(extraBallEffectsColour); 
 }

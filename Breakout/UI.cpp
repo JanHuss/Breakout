@@ -58,10 +58,13 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 		_powerupText.setFillColor(ballEffectsColour);
 		break;
 	case fireBall:
+		{
 		oss << std::fixed << std::setprecision(2) << powerup.second;
 		_powerupText.setString("FIRE BALL: " + oss.str());
-		_powerupText.setFillColor(extraBallEffectsColour);
+		int flicker = rand() % 50 + 205;
+		_powerupText.setFillColor(sf::Color(flicker, flicker / 2, 0));
 		break;
+		}
 	case none:
 		_powerupText.setString("");
 		

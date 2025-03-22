@@ -115,7 +115,7 @@
       <Filter>Source Files\Breakout\Managers</Filter>
     </ClCompile>
     <ClCompile Include="BallManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Breakout\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -207,7 +207,7 @@
       <Filter>Header Files\Breakout\Managers</Filter>
     </ClInclude>
     <ClInclude Include="BallManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Breakout\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

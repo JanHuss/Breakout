@@ -94,7 +94,6 @@ void Ball::ballCollisions(float dt)
     {
         _direction.x *= -1;
         // play sound here
-        //bounds->setPitch((float)(rand() % 1) - 2.0f);
         bounds->setPanning(0.8f, 0.2f);
         bounds->play();
     }
@@ -103,7 +102,6 @@ void Ball::ballCollisions(float dt)
     {
         _direction.x *= -1;
         // play sound here
-        //bounds->setPitch((float)(rand() % 1) - 2.0f);
         bounds->setPanning(0.2f, 0.8f);
         bounds->play();
     }
@@ -113,8 +111,6 @@ void Ball::ballCollisions(float dt)
     {
         _direction.y *= -1;
         // play sound here
-        //bounds->setPitch(0.5f);
-        //bounds->setPitch((float)(rand() % 1) - 2.0f);
         panToBallPosition();
         bounds->play();
     }
