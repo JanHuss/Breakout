@@ -20,6 +20,8 @@ public:
 
 	// --- Powerups ---
 	//void setSlowBall(float duration);
+	void addBall();
+	void removeBall();
 
 	std::vector<Ball*> _balls;
 
@@ -27,5 +29,6 @@ private:
 	sf::RenderWindow* _window;
 	Engine* audioEngine;
 	GameManager* gameManager;
+	bool _isDoubleBall;
 };
 

@@ -262,7 +262,11 @@ void GameManager::updateGameState(float dt)
 void GameManager::loseLife()
 {
 	if (_lives > 0)
-		_lives--;
+	{
+		if (_ballManager->_balls.size() < 3)
+			_lives--;
+		_ballManager->removeBall();
+	}
 	_ui->lifeLost(_lives);
 }
 

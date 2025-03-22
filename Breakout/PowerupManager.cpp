@@ -60,7 +60,7 @@ void PowerupManager::spawnPowerup()
 {
 
     // TODO finish this.
-    switch (/*rand() % 6*/ 4)
+    switch (/*rand() % 6*/ 5)
     {
     case 0:
         _powerups.push_back(new PowerupBigPaddle(_window, _paddle, audioEngine, _ballManager));

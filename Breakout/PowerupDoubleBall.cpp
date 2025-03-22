@@ -12,5 +12,6 @@ PowerupDoubleBall::~PowerupDoubleBall()
 
 std::pair<POWERUPS, float> PowerupDoubleBall::applyEffect()
 {
-	return std::pair<POWERUPS, float>();
+	_ballManager->addBall();
+	return {doubleBall, 10.0f};
 }

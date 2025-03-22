@@ -26,8 +26,8 @@ public:
 
     void panToBallPosition();
 
-private:
     sf::CircleShape _sprite;
+private:
     sf::CircleShape _fastBallSprite;
     sf::CircleShape _fastBallSpriteTwo;
     sf::Vector2f _direction;
