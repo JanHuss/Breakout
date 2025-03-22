@@ -121,7 +121,7 @@ void Ball::ballCollisions(float dt)
         _gameManager->loseLife();
         // lose life sound here
         // place new position of ball
-        _sprite.setPosition(0, 300);
+        _sprite.setPosition(rand()% _window->getSize().x, rand()% 300 + 300);
         // stop game for 3 seconds so that the player can predict the ball
         // set a random direction downwards
         _direction = { 1, 1 };
