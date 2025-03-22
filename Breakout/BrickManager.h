@@ -10,6 +10,7 @@ public:
     void render();
     int checkCollision(sf::CircleShape& ball, sf::Vector2f& direction);
     std::vector<Brick> getBricks();
+    void shake();
 
 private:
     std::vector<Brick> _bricks;

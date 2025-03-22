@@ -98,3 +98,16 @@ std::vector<Brick> BrickManager::getBricks()
 {
     return _bricks;
 }
+
+void BrickManager::shake()
+{
+    for (auto& brick: _bricks)
+    {
+        // move them randomly 
+        brick.getShape().move(rand()% 30, rand()% 50);
+    }
+    for (auto& brick : _bricks)
+    {
+        // set back to original position
+    }
+}
