@@ -9,7 +9,9 @@
 #include "PowerupSlowBall.h"
 #include "PowerupFastBall.h"
 #include "PowerupFireBall.h"
+#include "PowerupDoubleBall.h"
 #include "Paddle.h"
+#include "BallManager.h"
 #include "Ball.h"
 #include "Engine.h"
 
@@ -17,7 +19,7 @@
 class PowerupManager
 {
 public:
-    PowerupManager(sf::RenderWindow* window, Paddle* paddle, Ball* ball, Engine* eng);
+    PowerupManager(sf::RenderWindow* window, Paddle* paddle, Ball* ball, Engine* eng, BallManager* ballMan);
     ~PowerupManager();
 
     void update(float dt);
@@ -31,6 +33,7 @@ private:
     sf::RenderWindow* _window;
     Paddle* _paddle;
     Ball* _ball;
+    BallManager* _ballManager;
     std::vector<PowerupBase*> _powerups;            // used to manage deletion.
     std::optional<std::pair<POWERUPS, float>> _powerupInEffect;    // used for gameManager to get reference.
     

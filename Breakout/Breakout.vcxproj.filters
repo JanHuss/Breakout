@@ -28,6 +28,12 @@
     <Filter Include="Header Files\Breakout">
       <UniqueIdentifier>{5ed370a4-e672-4356-ac31-324b2bfd4810}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Breakout\Managers">
+      <UniqueIdentifier>{193d59ac-568e-40fd-8d54-a0bbfb85146f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Breakout\Managers">
+      <UniqueIdentifier>{f80d3049-b871-41c9-9ea0-9ec3c89ded44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -87,16 +93,7 @@
     <ClCompile Include="Brick.cpp">
       <Filter>Source Files\Breakout</Filter>
     </ClCompile>
-    <ClCompile Include="BrickManager.cpp">
-      <Filter>Source Files\Breakout</Filter>
-    </ClCompile>
-    <ClCompile Include="GameManager.cpp">
-      <Filter>Source Files\Breakout</Filter>
-    </ClCompile>
     <ClCompile Include="Paddle.cpp">
-      <Filter>Source Files\Breakout</Filter>
-    </ClCompile>
-    <ClCompile Include="PowerupManager.cpp">
       <Filter>Source Files\Breakout</Filter>
     </ClCompile>
     <ClCompile Include="UI.cpp">
@@ -104,6 +101,21 @@
     </ClCompile>
     <ClCompile Include="MessagingSystem.cpp">
       <Filter>Source Files\Breakout</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerupDoubleBall.cpp">
+      <Filter>Powerups</Filter>
+    </ClCompile>
+    <ClCompile Include="BrickManager.cpp">
+      <Filter>Source Files\Breakout\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files\Breakout\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerupManager.cpp">
+      <Filter>Source Files\Breakout\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="BallManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,19 +182,10 @@
     <ClInclude Include="Brick.h">
       <Filter>Header Files\Breakout</Filter>
     </ClInclude>
-    <ClInclude Include="BrickManager.h">
-      <Filter>Header Files\Breakout</Filter>
-    </ClInclude>
     <ClInclude Include="CONSTANTS.h">
       <Filter>Header Files\Breakout</Filter>
     </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>Header Files\Breakout</Filter>
-    </ClInclude>
     <ClInclude Include="Paddle.h">
-      <Filter>Header Files\Breakout</Filter>
-    </ClInclude>
-    <ClInclude Include="PowerupManager.h">
       <Filter>Header Files\Breakout</Filter>
     </ClInclude>
     <ClInclude Include="UI.h">
@@ -190,6 +193,21 @@
     </ClInclude>
     <ClInclude Include="MessagingSystem.h">
       <Filter>Header Files\Breakout</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerupDoubleBall.h">
+      <Filter>Powerups</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickManager.h">
+      <Filter>Header Files\Breakout\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header Files\Breakout\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerupManager.h">
+      <Filter>Header Files\Breakout\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="BallManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

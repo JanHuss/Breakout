@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-PowerupBase::PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball, Engine* eng)
+PowerupBase::PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball, Engine* eng, BallManager* ballMan)
     : _time(0.0f), // Initialize the time variable
         audioEngine(eng)
 {
@@ -10,6 +10,7 @@ PowerupBase::PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball, E
     _paddle = paddle;
     _sprite.setRadius(RADIUS);
     _isAlive = true;
+    _ballManager = ballMan;
     _ball = ball;
 
     // Initial position and direction with some variability

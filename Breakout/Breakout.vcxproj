@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="Asset.cpp" />
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="BallManager.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickManager.cpp" />
     <ClCompile Include="Composite.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="PlaybackDevice.cpp" />
     <ClCompile Include="PowerupBase.cpp" />
     <ClCompile Include="PowerupBigPaddle.cpp" />
+    <ClCompile Include="PowerupDoubleBall.cpp" />
     <ClCompile Include="PowerupFastBall.cpp" />
     <ClCompile Include="PowerupFireBall.cpp" />
     <ClCompile Include="PowerupManager.cpp" />
@@ -169,6 +171,7 @@
   <ItemGroup>
     <ClInclude Include="Asset.h" />
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="BallManager.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrickManager.h" />
     <ClInclude Include="Component.h" />
@@ -184,6 +187,7 @@
     <ClInclude Include="PlaybackDevice.h" />
     <ClInclude Include="PowerupBase.h" />
     <ClInclude Include="PowerupBigPaddle.h" />
+    <ClInclude Include="PowerupDoubleBall.h" />
     <ClInclude Include="PowerupFastBall.h" />
     <ClInclude Include="PowerupFireBall.h" />
     <ClInclude Include="PowerupManager.h" />

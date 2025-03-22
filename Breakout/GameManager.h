@@ -5,6 +5,7 @@
 #include "Ball.h"
 #include "BrickManager.h"
 #include "PowerupManager.h"
+#include "BallManager.h"
 #include "MessagingSystem.h"
 #include "UI.h"
 //audio
@@ -61,9 +62,10 @@ private:
 
     sf::RenderWindow* _window;
     Paddle* _paddle;
-    Ball* _ball;
+    std::vector<Ball*> _balls;
     BrickManager* _brickManager;
     PowerupManager* _powerupManager;
+    BallManager* _ballManager;
     MessagingSystem* _messagingSystem;
     UI* _ui;
 

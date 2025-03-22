@@ -6,6 +6,7 @@
 #include "Ball.h"
 #include <vector>
 #include "Engine.h"
+#include "BallManager.h"
 
 //#include "PowerupFireBall.h"
 
@@ -13,7 +14,7 @@
 class PowerupBase
 {
 public:
-    PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball, Engine* eng);
+    PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball, Engine* eng, BallManager* ballMan);
     virtual ~PowerupBase();
 
     void update(float dt);
@@ -36,6 +37,7 @@ protected: // Protected so derived classes can access these members
     bool _isAlive;
     Paddle* _paddle;
     Ball* _ball;
+    BallManager* _ballManager;
     sf::Vector2f _direction;
 
     // Render
