@@ -13,6 +13,16 @@ Paddle::Paddle(sf::RenderWindow* window)
 	sf::Vector2u windowSize = _window->getSize();
 	sf::Vector2i centerPosition(windowSize.x / 2, _sprite.getPosition().y + _sprite.getSize().y / 2);
 	sf::Mouse::setPosition(centerPosition, *_window);
+    
+	if (sf::Joystick::isConnected(0))
+	{
+		// joystick number 0 is connected
+			// instead of an output, perhaps display it in the window
+		std::cout << "Joystick 0 is connected" << std::endl;
+        std::cout << "Joystick button count: " << sf::Joystick::getButtonCount(0) << std::endl;
+	}
+    else
+        std::cout << "Joystick 0 is NOT connected" << std::endl;
 
 }
 
@@ -110,7 +120,9 @@ void Paddle::moveLeft(float dt)
     float position = _sprite.getPosition().x;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)  || 
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && 
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+        sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) == -100 ||
+			sf::Joystick::isButtonPressed(0, 4) && 
         position > 0 )
     {
         _sprite.move(sf::Vector2f(-dt * PADDLE_SPEED, 0));
@@ -119,14 +131,16 @@ void Paddle::moveLeft(float dt)
 
 void Paddle::moveRight(float dt)
 {
-    float position = _sprite.getPosition().x;
+	float position = _sprite.getPosition().x;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || 
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && 
-        position < _window->getSize().x - _width)
-    {
-        _sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
-    }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
+		sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+		sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) == 100 ||
+		sf::Joystick::isButtonPressed(0, 5) &&
+		position < _window->getSize().x - _width)
+	{
+		_sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
+	}
 }
 
 // update width by SF of coeff. 

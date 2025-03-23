@@ -7,7 +7,7 @@
 
 GameManager::GameManager(sf::RenderWindow* window, Engine* audioEng)
 	: _window(window), audioEngine(audioEng), _paddle(nullptr)/*, _ball(nullptr)*/, _brickManager(nullptr), _powerupManager(nullptr),
-	_messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.0f), 
+	_messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.0f),
 	_powerupInEffect({ none, 0.0f }), _timeLastPowerupSpawned(0.f)
 {
 	_font.loadFromFile("font/montS.ttf");
@@ -154,10 +154,11 @@ void GameManager::handleInput(float dt)
 	//if (gameState == PLAY)
 	//	_paddle->setPosition(static_cast<float>(localMousePosition.x));
 
-	
+
 
 	// pause functionality
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) ||
+		sf::Joystick::isButtonPressed(0, 9))
 	{
 		if (!_pause && _pauseHold <= 0.0f)
 		{
@@ -185,7 +186,9 @@ void GameManager::handleInput(float dt)
 		}
 	}
 	// quit game
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) _window->close();
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) ||
+		sf::Joystick::isButtonPressed(0, 8)) 
+		_window->close();
 }
 
 void GameManager::updateGameState(float dt)
@@ -221,14 +224,20 @@ void GameManager::updateGameState(float dt)
 				smilyDayMusic->stop();
 			gameOver->play();
 		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+		// restart game
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)/* ||
+			sf::Joystick::isButtonPressed(0, 0)*/)
 		{
 			_gameOver = false;
 			_playedGameOver = false;
 			resetGame(gameOverText, 0);
 			gameState = PLAY;
+			break;
 		}
+		// quit game
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) ||
+			sf::Joystick::isButtonPressed(0, 8))
+			_window->close();
 		break;
 	case LEVELCOMPLETE:
 		_levelComplete = true;
