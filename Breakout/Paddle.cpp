@@ -6,6 +6,8 @@ Paddle::Paddle(sf::RenderWindow* window)
     _timeWithPowerupEffect(0.f)
 {
     _sprite.setFillColor(sf::Color::Cyan);
+	_sprite.setOutlineColor(sf::Color(255, 255, 255, 10));
+	_sprite.setOutlineThickness(1.0f);
     _sprite.setSize(sf::Vector2f(_width, PADDLE_HEIGHT));
     _sprite.setPosition(_window->getSize().x/2 - _sprite.getSize().x / 2, _window->getSize().y - 50.0f);
 
@@ -23,7 +25,6 @@ Paddle::Paddle(sf::RenderWindow* window)
 	}
     else
         std::cout << "Joystick 0 is NOT connected" << std::endl;
-
 }
 
 Paddle::~Paddle()
@@ -45,6 +46,7 @@ void Paddle::update(float dt)
             setBigPaddle(0);    
             setSmallPaddle(0);
             setReversePaddle(0);
+            setInvisiblePaddle(0);
             
             _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.      
     }
@@ -52,6 +54,8 @@ void Paddle::update(float dt)
     //_window->setMouseCursorVisible(false);
     if (_isSmallPaddle || _isBigPaddle || _isReversePaddle)
         _sprite.setFillColor(sf::Color(paddleEffectsColour));
+    if (_isInvisiblePaddle)
+        _sprite.setFillColor(sf::Color(invisibleEffectsColour));
 
     if (_timeInNewSize > 0)
     {
@@ -62,27 +66,28 @@ void Paddle::update(float dt)
         setWidth(1.0f, 0.0f); // Reset to default width after duration
     }
 
-    if (_width < _sprite.getSize().x)
-    {
-            _sprite.setSize(sf::Vector2f( _sprite.getSize().x - speed * dt, _sprite.getSize().y));
-    }
-    if (_width > _sprite.getSize().x)
-    {
-            _sprite.setSize(sf::Vector2f( _sprite.getSize().x + speed * dt, _sprite.getSize().y));
-    }
+	if (_width < _sprite.getSize().x)
+	{
+		_sprite.setSize(sf::Vector2f(_sprite.getSize().x - speed * dt, _sprite.getSize().y));
+		if (_width == PADDLE_WIDTH)
+			_sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
+	}
+	if (_width > _sprite.getSize().x)
+	{
+		_sprite.setSize(sf::Vector2f(_sprite.getSize().x + speed * dt, _sprite.getSize().y));
+		if (_width == PADDLE_WIDTH)
+			_sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
+	}
+
     // this allows the mouse to move but prevents the keyboard input from moving
     // currently sets itself to right on initialisation
     // these two lines are not needed if the game does not require mouse controls
     //float newX = sf::Mouse::getPosition().x - (_sprite.getSize().x / 2);
     //_sprite.setPosition(newX, _sprite.getPosition().y);
-
-    if (_width == PADDLE_WIDTH)
-        _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
+    
     //_sprite.getPosition();
 
-    
     handleInput(dt);
-
 }
 
 void Paddle::handleInput(float dt)
@@ -217,5 +222,17 @@ void Paddle::setReversePaddle(float duration)
 		return;
 	}
 	_isReversePaddle = false;
+	_timeWithPowerupEffect = 0.f;
+}
+
+void Paddle::setInvisiblePaddle(float duration)
+{
+	if (duration)
+	{
+		_isInvisiblePaddle = true;
+		_timeWithPowerupEffect = duration;
+		return;
+	}
+	_isInvisiblePaddle = false;
 	_timeWithPowerupEffect = 0.f;
 }

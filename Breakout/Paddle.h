@@ -24,6 +24,7 @@ public:
     void setSmallPaddle(float duration);
     void setBigPaddle(float duration);
     void setReversePaddle(float duration);
+    void setInvisiblePaddle(float duration);
 
 private:
 
@@ -40,4 +41,5 @@ private:
     bool _isSmallPaddle;
     bool _isBigPaddle;
     bool _isReversePaddle;
+    bool _isInvisiblePaddle;
 };

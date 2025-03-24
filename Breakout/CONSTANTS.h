@@ -10,6 +10,7 @@ enum POWERUPS
     fireBall,
     multiBall,
     reversePaddle,
+    invisiblePaddle,
     none
 };
 
@@ -46,5 +47,5 @@ constexpr int INITIAL_LIVES = 3;
 const sf::Color ballEffectsColour = sf::Color(100, 100, 200, 255); // blue-ish?
 const sf::Color paddleEffectsColour = sf::Color(255, 250, 205); // lemon chiffon -- very fancy. <- It's beige dude
 const sf::Color extraBallEffectsColour = sf::Color(41, 110, 1); // metallic green
-
+const sf::Color invisibleEffectsColour = sf::Color(0, 0, 0); // black
 

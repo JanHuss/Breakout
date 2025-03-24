@@ -70,6 +70,11 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 		_powerupText.setString("Reverse Paddle: " + oss.str());
 		_powerupText.setFillColor(sf::Color(paddleEffectsColour));
 		break;
+		case invisiblePaddle:
+		oss << std::fixed << std::setprecision(2) << powerup.second;
+		_powerupText.setString("Invisible Paddle: " + oss.str());
+		_powerupText.setFillColor(sf::Color(paddleEffectsColour));
+		break;
 	case none:
 		_powerupText.setString("");
 		

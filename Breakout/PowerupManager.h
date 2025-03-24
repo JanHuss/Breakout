@@ -9,6 +9,7 @@
 #include "PowerupSmallPaddle.h"
 #include "PowerupBigPaddle.h"
 #include "PowerupReversePaddle.h"
+#include "PowerupInvisiblePaddle.h"
 
 #include "BallManager.h"
 #include "PowerupSlowBall.h"

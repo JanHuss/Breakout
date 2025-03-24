@@ -120,6 +120,9 @@
     <ClCompile Include="PowerupReversePaddle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PowerupInvisiblePaddle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PowerupBase.h">
@@ -213,6 +216,9 @@
       <Filter>Header Files\Breakout\Managers</Filter>
     </ClInclude>
     <ClInclude Include="PowerupReversePaddle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerupInvisiblePaddle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

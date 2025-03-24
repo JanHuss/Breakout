@@ -159,6 +159,7 @@
     <ClCompile Include="PowerupDoubleBall.cpp" />
     <ClCompile Include="PowerupFastBall.cpp" />
     <ClCompile Include="PowerupFireBall.cpp" />
+    <ClCompile Include="PowerupInvisiblePaddle.cpp" />
     <ClCompile Include="PowerupManager.cpp" />
     <ClCompile Include="PowerupReversePaddle.cpp" />
     <ClCompile Include="PowerupSlowBall.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="PowerupDoubleBall.h" />
     <ClInclude Include="PowerupFastBall.h" />
     <ClInclude Include="PowerupFireBall.h" />
+    <ClInclude Include="PowerupInvisiblePaddle.h" />
     <ClInclude Include="PowerupManager.h" />
     <ClInclude Include="PowerupReversePaddle.h" />
     <ClInclude Include="PowerupSlowBall.h" />
