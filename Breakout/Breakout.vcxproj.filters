@@ -117,6 +117,9 @@
     <ClCompile Include="BallManager.cpp">
       <Filter>Source Files\Breakout\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="PowerupReversePaddle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PowerupBase.h">
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="BallManager.h">
       <Filter>Header Files\Breakout\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerupReversePaddle.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

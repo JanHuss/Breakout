@@ -34,8 +34,23 @@ Paddle::~Paddle()
 
 void Paddle::update(float dt)
 {
+	// check for powerup, tick down or correct
+    if (_timeWithPowerupEffect > 0.f)
+    {
+        _timeWithPowerupEffect -= dt;
+    }
+    else
+    {
+            // disable powerups
+            setBigPaddle(0);    
+            setSmallPaddle(0);
+            setReversePaddle(0);
+            
+            _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.      
+    }
+
     //_window->setMouseCursorVisible(false);
-    if (_isSmallPaddle || _isBigPaddle)
+    if (_isSmallPaddle || _isBigPaddle || _isReversePaddle)
         _sprite.setFillColor(sf::Color(paddleEffectsColour));
 
     if (_timeInNewSize > 0)
@@ -79,8 +94,8 @@ void Paddle::handleInput(float dt)
 		_sprite.setPosition(_window->getSize().x - _sprite.getSize().x - 0.5f, _sprite.getPosition().y);
 
     // --- Keyboard Controls ---
-	moveRight(dt);
-	moveLeft(dt);
+	    moveRight(dt);
+	    moveLeft(dt);
 }
 
 void Paddle::setPosition(float x)
@@ -117,16 +132,19 @@ sf::FloatRect Paddle::getBounds() const
 
 void Paddle::moveLeft(float dt)
 {
-    float position = _sprite.getPosition().x;
+	float position = _sprite.getPosition().x;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)  || 
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
-        sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) == -100 ||
-			sf::Joystick::isButtonPressed(0, 4) && 
-        position > 0 )
-    {
-        _sprite.move(sf::Vector2f(-dt * PADDLE_SPEED, 0));
-    }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
+		sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+		sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) == -100 ||
+		sf::Joystick::isButtonPressed(0, 4) &&
+		position > 0)
+	{
+		if (!_isReversePaddle)
+			_sprite.move(sf::Vector2f(-dt * PADDLE_SPEED, 0));
+		else
+			_sprite.move(sf::Vector2f(-dt * -PADDLE_SPEED, 0));
+	}
 }
 
 void Paddle::moveRight(float dt)
@@ -139,7 +157,10 @@ void Paddle::moveRight(float dt)
 		sf::Joystick::isButtonPressed(0, 5) &&
 		position < _window->getSize().x - _width)
 	{
-		_sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
+		if (!_isReversePaddle)
+			_sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
+		else
+			_sprite.move(sf::Vector2f(dt * -PADDLE_SPEED, 0));
 	}
 }
 
@@ -184,5 +205,17 @@ void Paddle::setBigPaddle(float duration)
 		return;
 	}
 	_isBigPaddle = false;
+	_timeWithPowerupEffect = 0.f;
+}
+
+void Paddle::setReversePaddle(float duration)
+{
+    if (duration)
+	{
+		_isReversePaddle = true;
+		_timeWithPowerupEffect = duration;
+		return;
+	}
+	_isReversePaddle = false;
 	_timeWithPowerupEffect = 0.f;
 }

@@ -4,14 +4,17 @@
 #include <vector>
 #include <optional>
 #include "PowerupBase.h"
-#include "PowerupBigPaddle.h"
+
+#include "Paddle.h"
 #include "PowerupSmallPaddle.h"
+#include "PowerupBigPaddle.h"
+#include "PowerupReversePaddle.h"
+
+#include "BallManager.h"
 #include "PowerupSlowBall.h"
 #include "PowerupFastBall.h"
 #include "PowerupFireBall.h"
 #include "PowerupDoubleBall.h"
-#include "Paddle.h"
-#include "BallManager.h"
 #include "Engine.h"
 
 
