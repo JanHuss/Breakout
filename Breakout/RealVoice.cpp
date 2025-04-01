@@ -6,15 +6,30 @@
 
 RealVoice::RealVoice()
 {
-	adjustPan(0.5f,0.5f);
+	adjustPan(0.5f, 0.5f);
 	adjustPitch(0.0f);
+	setIsStreaming(false);
 	//std::cout << "Real Voice -> currentPitch: " << pitch.load() << std::endl;
 }
 
-void RealVoice::assignDataToBuffer(std::vector<float>& audioData, bool loop, std::function<void()> fCallback)
+void RealVoice::assignDataToBuffer(std::vector<float>& audioData, bool loop,
+	std::function<void()> fCallback, ma_decoder* streamingDecoder)
 {
-	//std::clog << "Voice -> audio data size in voice: " << audioData.size() << std::endl;
-	buffer = audioData;
+	// if a reference of a decoder is passed through, 
+	// set the voice to streaming
+	if (streamingDecoder)
+	{
+		decoder = streamingDecoder;
+		setIsStreaming(true);
+		ma_decoder_seek_to_pcm_frame(decoder, 0);
+		channels = decoder->outputChannels;
+	}
+	else
+	{
+		//std::clog << "Voice -> audio data size in voice: " << audioData.size() << std::endl;
+		buffer = audioData;
+	}
+
 	isLooping = loop;
 	playHead.store(0);
 	setIsActive(true);
@@ -38,15 +53,76 @@ void RealVoice::processAudio(float* outputBuffer, ma_uint32 frameCount)
 	case RVPLAY:
 	{
 		//std::clog << "Voice -> \"processAudio()\" being called" << std::endl;
-		if (!getIsActive() || buffer.empty())
+		if (!getIsActive() || (!getIsStreaming() && buffer.empty()))
 		{
 			memset(outputBuffer, 0, frameCount * channels * sizeof(float));
+			return;
+		}
+		
+		// --- Streaming Algorithm ---
+		if (getIsStreaming() && decoder)
+		{
+			std::vector<float> temporaryBuffer(frameCount * channels);
+
+			if (!decoder)
+			{
+				std::cerr << "RealVoice -> Error: decoder == NULL" << std::endl;
+				return;
+			}
+			//std::clog << "RealVoice -> Framecount: " << frameCount << ", channels: " << channels << std::endl;
+
+			//ma_uint64 cursor;
+			//ma_decoder_get_cursor_in_pcm_frames(decoder, &cursor);
+			//
+			//ma_uint64 total;
+			//ma_decoder_get_length_in_pcm_frames(decoder, &total);
+			//
+			//std::clog << "[processAudio] decoder position: " << cursor << " / " << total << std::endl;
+			//ma_decoder_seek_to_pcm_frame(decoder, 0);
+
+			ma_uint64 framesRead = 0;
+			ma_decoder_read_pcm_frames(decoder, temporaryBuffer.data(), frameCount, &framesRead);
+
+			for (ma_uint32 i = 0; i < framesRead; ++i)
+			{
+				float sampleLeft = 0.0f;
+				float sampleRight = 0.0f;
+
+				if (channels == 1)
+				{
+					float sample = temporaryBuffer[i];
+					sampleLeft = sample * (1.0f - pan);
+					sampleRight = sample * pan;
+				}
+				else if (channels == 2)
+				{
+					sampleLeft = temporaryBuffer[i*2] * (1.0f - pan);
+					sampleRight = temporaryBuffer[i*2 + 1] * pan;
+				}
+				outputBuffer [i * 2] += sampleLeft * leftPanning.load();
+				outputBuffer [i * 2 + 1] += sampleRight * rightPanning.load();
+			}
+
+			if (framesRead < frameCount)
+			{
+				if (isLooping)
+				{
+					ma_decoder_seek_to_pcm_frame(decoder, 0);
+				}
+				else
+				{
+					clearBuffer();
+					finishedCallback();
+				}
+			}
+
 			return;
 		}
 
 		// number of frames to hit the expected max/min fade
 		const ma_uint32 fadeDuration = 1000;
 
+		// --- Buffer Algorithm ---
 		ma_uint32 i = 0;
 		for (; i < frameCount; ++i)
 		{
@@ -156,76 +232,76 @@ void RealVoice::processAudio(float* outputBuffer, ma_uint32 frameCount)
 
 		if (elapsedSincePause < fadeDuration)
 		{
-		if (!getIsActive() || buffer.empty())
-		{
-			memset(outputBuffer, 0, frameCount * channels * sizeof(float));
-			return;
-		}
-		ma_uint32 i = 0;
-		for (; i < frameCount; ++i)
-		{
-			if (threadPlayhead < buffer.size() - 1)
+			if (!getIsActive() || buffer.empty())
 			{
-				if (channels == 1)
-				{
-					float sample = buffer[threadPlayhead++];
-					playHead.store(threadPlayhead);
-					sampleLeft = sample * (1.0f - pan);
-					sampleRight = sample * pan;
-					//std::clog << "RealVoice -> 1 Channel" << std::endl;
-				}
-				else if (channels == 2)
-				{
-					//float currentPitch = pitch.load();
-
-					sampleLeft = buffer[threadPlayhead++];
-					sampleRight = buffer[threadPlayhead++];
-					//sampleLeft = interpolateSample(buffer, threadPlayhead++);
-					////threadPlayhead++;
-					//sampleRight = interpolateSample(buffer, threadPlayhead++);
-
-					//threadPlayhead += pitch.load() * channels;
-					//std::cout << "Real Voice -> channels 2" << std::endl;
-					playHead.store(threadPlayhead);
-				}
+				memset(outputBuffer, 0, frameCount * channels * sizeof(float));
+				return;
 			}
-			else
+			ma_uint32 i = 0;
+			for (; i < frameCount; ++i)
 			{
-				// Loop
-				if (isLooping)
+				if (threadPlayhead < buffer.size() - 1)
 				{
-					threadPlayhead = 0;
-					playHead.store(threadPlayhead);
+					if (channels == 1)
+					{
+						float sample = buffer[threadPlayhead++];
+						playHead.store(threadPlayhead);
+						sampleLeft = sample * (1.0f - pan);
+						sampleRight = sample * pan;
+						//std::clog << "RealVoice -> 1 Channel" << std::endl;
+					}
+					else if (channels == 2)
+					{
+						//float currentPitch = pitch.load();
+
+						sampleLeft = buffer[threadPlayhead++];
+						sampleRight = buffer[threadPlayhead++];
+						//sampleLeft = interpolateSample(buffer, threadPlayhead++);
+						////threadPlayhead++;
+						//sampleRight = interpolateSample(buffer, threadPlayhead++);
+
+						//threadPlayhead += pitch.load() * channels;
+						//std::cout << "Real Voice -> channels 2" << std::endl;
+						playHead.store(threadPlayhead);
+					}
 				}
-				// Stop
 				else
 				{
-					//setIsActive(false);
-					hasFadedIn = false;
-					clearBuffer();
-					std::cout << "Real Voice -> set Is active is false" << std::endl;
-					break;
+					// Loop
+					if (isLooping)
+					{
+						threadPlayhead = 0;
+						playHead.store(threadPlayhead);
+					}
+					// Stop
+					else
+					{
+						//setIsActive(false);
+						hasFadedIn = false;
+						clearBuffer();
+						std::cout << "Real Voice -> set Is active is false" << std::endl;
+						break;
+					}
 				}
+
+				// Calculate the fade out when the pause state is initialised
+				float fadeFactor = 1.0f;
+
+				if (elapsedSincePause < fadeDuration)
+					fadeFactor = 1.0f - (1.0f - cosf(3.14159265359 * elapsedSincePause / fadeDuration)) * 0.5f;
+				else
+					fadeFactor = 0.0f;
+				// pass fade, left and right samples to output buffer
+				outputBuffer[i * 2] += sampleLeft * fadeFactor * leftPanning.load();
+				outputBuffer[i * 2 + 1] += sampleRight * fadeFactor * rightPanning.load();
+				// likewise, a fade in should exist if the track is being unpaused. it will fade in
+				// until a certain threshold and then set the unpaused bool to true.
+				unPaused = false;
+
 			}
-
-			// Calculate the fade out when the pause state is initialised
-			float fadeFactor = 1.0f;
-
-			if (elapsedSincePause < fadeDuration)
-				fadeFactor = 1.0f - (1.0f - cosf(3.14159265359 * elapsedSincePause / fadeDuration)) * 0.5f;
-			else
-				fadeFactor = 0.0f;
-			// pass fade, left and right samples to output buffer
-			outputBuffer[i * 2] += sampleLeft * fadeFactor * leftPanning.load();
-			outputBuffer[i * 2 + 1] += sampleRight * fadeFactor * rightPanning.load();
-			// likewise, a fade in should exist if the track is being unpaused. it will fade in
-			// until a certain threshold and then set the unpaused bool to true.
-			unPaused = false;
-
-		}
 		}
 		else
-		break;
+			break;
 	}
 
 
@@ -253,6 +329,16 @@ void RealVoice::setPlayHead(float plHead)
 float RealVoice::getPlayHead()
 {
 	return playHead;
+}
+
+void RealVoice::setIsStreaming(bool iS)
+{
+	isStreaming = iS;
+}
+
+bool RealVoice::getIsStreaming()
+{
+	return isStreaming;
 }
 
 std::vector<float> RealVoice::getBuffer()
@@ -314,10 +400,10 @@ void RealVoice::adjustPitch(float semitones)
 		pitch.store(0.0f);
 	else
 	{
-		//std::cout << "Real Voice -> currentPitch before: " << pitch.load() << std::endl;
+		std::cout << "Real Voice -> currentPitch before: " << pitch.load() << std::endl;
 		//pitch.store(std::pow(2.0f, semitones /12.0f));
 		pitch.store(semitones);
-		//std::cout << "Real Voice -> currentPitch after: " << pitch.load() << std::endl;
+		std::cout << "Real Voice -> currentPitch after: " << pitch.load() << std::endl;
 	}
 }
 
@@ -349,12 +435,12 @@ float RealVoice::interpolateSample(std::vector<float>& audioData, float index)
 
 	float fractionalIndex = index - i;
 
-	
 
-//if (i + 1 < audioData.size())
-//	return audioData[i] * (1.0f - fractionalIndex) + audioData[i + 1] * fractionalIndex;
-//else
-//	return audioData[i];
+
+	//if (i + 1 < audioData.size())
+	//	return audioData[i] * (1.0f - fractionalIndex) + audioData[i + 1] * fractionalIndex;
+	//else
+	//	return audioData[i];
 
 	float a, b, c, d;
 

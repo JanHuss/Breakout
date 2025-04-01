@@ -1,6 +1,7 @@
 #include "VirtualVoice.h"
 
-void VirtualVoice::assignDataToBuffer(std::vector<float>& audioData, bool loop, std::function<void()> fCallback)
+void VirtualVoice::assignDataToBuffer(std::vector<float>& audioData, 
+	bool loop, std::function<void()> fCallback, ma_decoder* streamingDecoder)
 {																			
 	buffer = audioData;
 	isLooping = loop;

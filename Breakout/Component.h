@@ -35,7 +35,7 @@ public:
 	virtual bool IsComposite() const {return false;}
 
 	// voice setup
-	virtual void assignAssetToTrack(std::vector<float> asset){}
+	virtual void assignAssetToTrack(std::vector<float> asset, ma_decoder* streamDecoder = nullptr){}
 
 	virtual void assignTrackToRealVoice(){}
 	virtual void assignTrackToVirtualVoice(){}

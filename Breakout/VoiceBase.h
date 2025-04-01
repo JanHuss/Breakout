@@ -18,7 +18,7 @@
 class VoiceBase
 {
 public:
-	virtual void assignDataToBuffer(std::vector<float>& audioData, bool loop, std::function<void()> fCallback) = 0;
+	virtual void assignDataToBuffer(std::vector<float>& audioData, bool loop, std::function<void()> fCallback, ma_decoder* streamingDecoder) = 0;
     virtual void clearBuffer() = 0;
     virtual void processAudio(float* outputBuffer, ma_uint32 frameCount) = 0;
     

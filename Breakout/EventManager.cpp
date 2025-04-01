@@ -30,66 +30,67 @@ void EventManager::init()
 
 	// Game song
 	tree->Add(gameMusic);
-	smilyDay_Asset.loadFile("assets/audio/SmileyDayToYa.wav");
-	gameMusic->assignAssetToTrack(smilyDay_Asset.getAudioData());
+	smilyDay_Asset.loadFile("assets/audio/SmileyDayToYa.wav", STREAM);
+	//gameMusic->assignAssetToTrack(smilyDay_Asset.getAudioData());
+	gameMusic->assignAssetToTrack({}, &smilyDay_Asset.decoder);
 	gameMusic->setVolume(1.0f);
 	gameMusic->setLoop(true);
 
 	// Ball colliding with Paddle
 	tree->Add(paddle);
-	paddle_Asset.loadFile("assets/audio/PaddleBall.wav");
+	paddle_Asset.loadFile("assets/audio/PaddleBall.wav", PCM);
 	paddle->assignAssetToTrack(paddle_Asset.getAudioData());
 	paddle->setLoop(false);
 
 	// Ball colliding with Bounds (same asset as paddle sound but pitched differently)
 	tree->Add(bounds);
-	paddle_Asset.loadFile("assets/audio/PaddleBall.wav");
+	paddle_Asset.loadFile("assets/audio/PaddleBall.wav", PCM);
 	bounds->assignAssetToTrack(paddle_Asset.getAudioData());
 	bounds->setLoop(false);
 	bounds->setPitch(0.5);
 
 	// Ball colliding with Brick
 	tree->Add(brick);
-	brick_Asset.loadFile("assets/audio/PaddleBrick.wav");
+	brick_Asset.loadFile("assets/audio/PaddleBrick.wav", PCM);
 	brick->assignAssetToTrack(brick_Asset.getAudioData());
 	brick->setLoop(false);
 
 	// When entering and exiting the Pause menu
 	tree->Add(pause);
-	pause_Asset.loadFile("assets/audio/PauseMenu.wav");
+	pause_Asset.loadFile("assets/audio/PauseMenu.wav", PCM);
 	pause->assignAssetToTrack(pause_Asset.getAudioData());
 	pause->setLoop(false);
 
 	// When Game Over
 	tree->Add(gameOver);
-	gameOver_Asset.loadFile("assets/audio/GameOver.wav");
+	gameOver_Asset.loadFile("assets/audio/GameOver.wav", PCM);
 	gameOver->assignAssetToTrack(gameOver_Asset.getAudioData());
 	gameOver->setLoop(false);
 
 	// When winning a level
 	tree->Add(levelComplete);
-	levelComplete_Asset.loadFile("assets/audio/LevelComplete.wav");
+	levelComplete_Asset.loadFile("assets/audio/LevelComplete.wav", PCM);
 	levelComplete->assignAssetToTrack(levelComplete_Asset.getAudioData());
 	levelComplete->setLoop(false);
 
 	// Padddle Shrink Debuf
 	tree->Add(paddleShrink);
-	paddleShrink_Asset.loadFile("assets/audio/paddleShrink.wav");
+	paddleShrink_Asset.loadFile("assets/audio/paddleShrink.wav", PCM);
 	paddleShrink->assignAssetToTrack(paddleShrink_Asset.getAudioData());
 
 	// Paddle Expand Buff
 	tree->Add(paddleExpand);
-	paddleExpand_Asset.loadFile("assets/audio/paddleExpand.wav");
+	paddleExpand_Asset.loadFile("assets/audio/paddleExpand.wav", PCM);
 	paddleExpand->assignAssetToTrack(paddleExpand_Asset.getAudioData());
 
 	// Ball speed for slow and fast ball buffs
 	tree->Add(ballSpeed);
-	ballSpeed_Asset.loadFile("assets/audio/SlowBall.wav");
+	ballSpeed_Asset.loadFile("assets/audio/SlowBall.wav", PCM);
 	ballSpeed->assignAssetToTrack(ballSpeed_Asset.getAudioData());
 
 	// Fireball buff
 	tree->Add(fireBall);
-	fireBall_Asset.loadFile("assets/audio/FireBall.wav");
+	fireBall_Asset.loadFile("assets/audio/FireBall.wav", PCM);
 	fireBall->assignAssetToTrack(fireBall_Asset.getAudioData());
 
 }

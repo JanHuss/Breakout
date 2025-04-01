@@ -20,7 +20,7 @@ class Leaf :
 public:
     std::string Operation() const override; 
 
-    void assignAssetToTrack(std::vector<float> asset);
+    void assignAssetToTrack(std::vector<float> asset, ma_decoder* streamDecoder = nullptr);
 
     void assignTrackToRealVoice();
     void assignTrackToVirtualVoice();
@@ -55,6 +55,8 @@ private:
     float rightPan = 0.5f;
     bool isLooping;
     bool isPlaying = false;
+
+    ma_decoder* decoder = nullptr;
 
     // think this can be removed
     VoiceBase* currentVoice = nullptr;

@@ -1,16 +1,21 @@
 #include "Leaf.h"
-//#include "RealVoice.h"
-//#include "VirtualVoice.h"
-
 
 std::string Leaf::Operation() const
 {
     return "Track";
 }
 
-void Leaf::assignAssetToTrack(std::vector<float> asset)
+// Never used a parameter to be passed as a default value and this is the 
+// time to use it ^^ 
+void Leaf::assignAssetToTrack(std::vector<float> asset, 
+    ma_decoder* streamDecoder)
 {
     audioData = asset;
+
+    // set the parameter to the decoder which will then 
+    // be used in `assignTrackToRealVoice()` function
+    decoder = streamDecoder;
+
     std::cout << "Leaf -> assigning Asset to Track" << std::endl;
     std::cout << "Leaf -> audio data's current size: " << getAudioData().size() << std::endl;
 }
@@ -18,6 +23,7 @@ void Leaf::assignAssetToTrack(std::vector<float> asset)
 void Leaf::assignTrackToRealVoice()
 {
     realVoice = realVoicePool->getRealVoice();
+
     if (realVoice)
     {
         setIsPlaying(true);
@@ -29,13 +35,14 @@ void Leaf::assignTrackToRealVoice()
         std::cout << "Leaf -> Current Left Panning: " << leftPan << " and Right Panning: " << rightPan <<  std::endl;
         std::cout << "Leaf -> assigning Track to \"Real Voice\"" << std::endl;
         realVoice->assignDataToBuffer(audioData, getLoop(), [this](){
-           realVoice = nullptr; });
+           realVoice = nullptr; }, decoder);
     }
 }
 
 void Leaf::assignTrackToVirtualVoice()
 {
     virtualVoice = virtualVoicePool->getVirtualVoice();
+
     if (virtualVoice)
     {
         setIsPlaying(true);
@@ -151,7 +158,7 @@ void Leaf::setPanning(float lp, float rp)
 
 void Leaf::setPitch(float semitones)
 {
-    //std::clog << "Leaf -> setting pitch to: \"" << semitones << "\"" << std::endl;
+    std::clog << "Leaf -> setting pitch to: \"" << semitones << "\"" << std::endl;
     pitch = semitones;
     if (realVoice)
         realVoice->adjustPitch(semitones);

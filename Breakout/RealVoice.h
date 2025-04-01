@@ -27,13 +27,18 @@ class RealVoice :
 {
 public:
     RealVoice();
-    void assignDataToBuffer(std::vector<float>& audioData, bool loop, std::function<void()> fCallback) override;
+    void assignDataToBuffer(std::vector<float>& audioData, bool loop, 
+        std::function<void()> fCallback, ma_decoder* streamingDecoder = nullptr) override;
     void clearBuffer() override;
     void processAudio(float* outputBuffer, ma_uint32 frameCount) override;
+
+    // setters and getters
     void setIsActive(bool iActive);
     bool getIsActive();
     void setPlayHead(float plHead);
     float getPlayHead();
+    void setIsStreaming(bool iS);
+    bool getIsStreaming();
     // has to be removed. just used for testing what the buffer is looking like in callback
     std::vector<float> getBuffer() override;
     void captureData(VirtualVoice* vVoice);
@@ -62,8 +67,16 @@ private:
     bool hasFadedIn = false;
     bool unPaused = true;
     bool pausedStartSet = false;
+
+    // streaming
+    ma_decoder* decoder = nullptr;
+    bool isStreaming;
+
+    // callback within audio thread for voice to unassign itself from 
+    // leaf/track
     std::function<void()> finishedCallback;
 
+    // atomic variables to avoid main/audio thread race conditions
     std::atomic<float> playHead {0.0f};
     std::atomic<float> volume;
     std::atomic<float> leftPanning;
