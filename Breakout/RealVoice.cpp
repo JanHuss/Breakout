@@ -77,7 +77,7 @@ void RealVoice::processAudio(float* outputBuffer, ma_uint32 frameCount)
 			//ma_uint64 total;
 			//ma_decoder_get_length_in_pcm_frames(decoder, &total);
 			//
-			//std::clog << "[processAudio] decoder position: " << cursor << " / " << total << std::endl;
+			//std::clog << "decoder position: " << cursor << " / " << total << std::endl;
 			//ma_decoder_seek_to_pcm_frame(decoder, 0);
 
 			ma_uint64 framesRead = 0;

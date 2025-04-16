@@ -24,11 +24,15 @@ class VirtualVoice :
     public VoiceBase
 {
 public:
+    VirtualVoice();
 	void assignDataToBuffer(std::vector<float>& audioData, bool loop, 
         std::function<void()> fCallback, ma_decoder* streamingDecoder = nullptr) override;
     void clearBuffer() override;
     void processAudio(float* outputBuffer, ma_uint32 frameCount) override;
     // has to be removed. just used for testing what the buffer is looking like in callback
+    
+    void setIsStreaming(bool iS);
+    bool getIsStreaming();
     std::vector<float> getBuffer() override;
 
     void setIsActive(bool iActive);
@@ -52,5 +56,9 @@ private:
     bool isActive = false;
     int channels = 2;
     std::function<void()> finishedCallback;
+
+    // streaming
+    ma_decoder* decoder = nullptr;
+    bool isStreaming;
 };
 

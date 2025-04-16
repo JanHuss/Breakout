@@ -48,7 +48,7 @@ void Leaf::assignTrackToVirtualVoice()
         setIsPlaying(true);
         std::cout << "Leaf -> assigning Track to \"Virtual Voice\"" << std::endl;
         virtualVoice->assignDataToBuffer(audioData, getLoop(), [this](){
-           realVoice = nullptr; });
+           virtualVoice = nullptr;}, decoder);
         // give the virtual voice a reference of the track it is directing to
        
     }
@@ -97,7 +97,8 @@ void Leaf::play()
         voiceType = VIRTUAL;
         if(!realVoice)
             assignTrackToVirtualVoice();
-        virtualVoice->vVTransportState = VVPLAY;
+        if (virtualVoice)
+            virtualVoice->vVTransportState = VVPLAY;
         std::cout << "Leaf -> No \"Real Voice\" Available. Assign asset to \"Virtual Voice\" " << std::endl;
     }
 }
@@ -158,7 +159,7 @@ void Leaf::setPanning(float lp, float rp)
 
 void Leaf::setPitch(float semitones)
 {
-    std::clog << "Leaf -> setting pitch to: \"" << semitones << "\"" << std::endl;
+    //std::clog << "Leaf -> setting pitch to: \"" << semitones << "\"" << std::endl;
     pitch = semitones;
     if (realVoice)
         realVoice->adjustPitch(semitones);

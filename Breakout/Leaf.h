@@ -55,6 +55,7 @@ private:
     float rightPan = 0.5f;
     bool isLooping;
     bool isPlaying = false;
+    bool voiceCleanup = false;
 
     ma_decoder* decoder = nullptr;
 

@@ -1,9 +1,24 @@
 #include "VirtualVoice.h"
 
-void VirtualVoice::assignDataToBuffer(std::vector<float>& audioData, 
+VirtualVoice::VirtualVoice()
+{
+	setIsStreaming(false);
+}
+
+void VirtualVoice::assignDataToBuffer(std::vector<float>& audioData,
 	bool loop, std::function<void()> fCallback, ma_decoder* streamingDecoder)
-{																			
-	buffer = audioData;
+{	
+	if (streamingDecoder)
+	{
+		decoder = streamingDecoder;
+		setIsStreaming(true);
+		//ma_decoder_seek_to_pcm_frame(decoder, 0);
+		channels = decoder->outputChannels;
+	}
+	else
+	{
+		buffer = audioData;
+	}
 	isLooping = loop;
 	playHead.store(0);
 	setIsActive(true);
@@ -27,7 +42,49 @@ void VirtualVoice::processAudio(float* outputBuffer, ma_uint32 frameCount)
 	{
 	case VVPLAY:
 	{
-		
+		// --- Streaming Algorithm ---
+		if (getIsStreaming() && decoder)
+		{
+			for (ma_uint32 i = 0; i < frameCount; ++i)
+			{
+				float theadPlayhead = playHead.load();
+				ma_uint64 framesRead = 0;
+
+				// a tempbuffer to pass into ma_decoder_read_pcm_frame 
+				// assuming 2 channels
+				float tempBuffer[2];
+				ma_decoder_read_pcm_frames(decoder, tempBuffer, 1, &framesRead);
+
+				if (framesRead != 0)
+				{
+					++theadPlayhead;
+					playHead.store(theadPlayhead);
+				}
+				else if (framesRead == 0)
+				{
+					if (isLooping)
+					{
+						ma_decoder_seek_to_pcm_frame(decoder, 0);
+						playHead.store(0);
+					}
+					else
+					{
+						setIsActive(false);
+						finishedCallback();
+						break;
+					}
+				}
+
+				
+			}
+
+			return;
+		}
+
+
+		// --- Buffer Algorithm ---
+		if (!getIsStreaming() && !decoder)
+		{
 		for (ma_uint32 i = 0; i < frameCount; ++i)
 		{
 			float threadPlayhead = playHead.load();
@@ -49,13 +106,15 @@ void VirtualVoice::processAudio(float* outputBuffer, ma_uint32 frameCount)
 					setIsActive(false);
 					std::clog << "Virtual Voice -> set Is active is false" << std::endl;
 					finishedCallback();
-					break;
+					return;
+					//break;
 				}
 			}
 		
 
 		}
 		break;
+		}
 	}
 	case VVPAUSE:
 	{
@@ -68,6 +127,15 @@ void VirtualVoice::processAudio(float* outputBuffer, ma_uint32 frameCount)
 
 }
 
+void VirtualVoice::setIsStreaming(bool iS)
+{
+	isStreaming = iS;
+}
+
+bool VirtualVoice::getIsStreaming()
+{
+	return isStreaming;
+}
 
 std::vector<float> VirtualVoice::getBuffer()
 {

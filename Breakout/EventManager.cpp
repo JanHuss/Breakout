@@ -30,9 +30,10 @@ void EventManager::init()
 
 	// Game song
 	tree->Add(gameMusic);
-	smilyDay_Asset.loadFile("assets/audio/SmileyDayToYa.wav", STREAM);
-	//gameMusic->assignAssetToTrack(smilyDay_Asset.getAudioData());
-	gameMusic->assignAssetToTrack({}, &smilyDay_Asset.decoder);
+	smilyDay_Asset.loadFile("assets/audio/SmileyDayToYa.wav", PCM);
+	//smilyDay_Asset.loadFile("assets/audio/SmileyDayToYa.wav", STREAM);
+	gameMusic->assignAssetToTrack(smilyDay_Asset.getAudioData());
+	//gameMusic->assignAssetToTrack({}, &smilyDay_Asset.decoder);
 	gameMusic->setVolume(1.0f);
 	gameMusic->setLoop(true);
 

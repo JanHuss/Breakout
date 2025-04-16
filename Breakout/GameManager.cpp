@@ -59,8 +59,8 @@ void GameManager::initialize()
 	_ui = new UI(_window, _lives, this);
 
 	// Create bricks
-	_brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
-	//_brickManager->createBricks(1, 2, 1000.0f, 30.0f, 1.0f); // debug state
+	//_brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+	_brickManager->createBricks(1, 2, 1000.0f, 30.0f, 1.0f); // debug state
 
 	// set level text
 	_levelText.setString("Level: " + std::to_string(_level));
@@ -75,6 +75,12 @@ void GameManager::deleteObjects()
 	//delete _balls;
 	delete _powerupManager;
 	delete _ui;
+
+	//delete audioEngine;
+	//delete smilyDayMusic;
+	//delete pause;
+	//delete gameOver;
+	//delete levelComplete;
 }
 
 
@@ -223,6 +229,7 @@ void GameManager::updateGameState(float dt)
 			if (smilyDayMusic->getIsPlaying())
 				smilyDayMusic->stop();
 			gameOver->play();
+			break;
 		}
 		// restart game
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)/* ||
